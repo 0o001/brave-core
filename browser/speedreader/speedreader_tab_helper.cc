@@ -594,14 +594,14 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
 
 void SpeedreaderTabHelper::OnGetDocumentSource(bool success, std::string html) {
   DCHECK(single_shot_next_request_);
-  if (!success) {
+  if (!success || html.empty()) {
     // TODO(boocmp): Show error dialog [Distillation failed on this page].
     SetNextRequestState(DistillState::kPageProbablyReadable);
     UpdateUI();
     return;
   }
 
-  single_show_content_.swap(html);
+  single_show_content_ = std::move(html);
   ReloadContents();
 }
 
