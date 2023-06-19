@@ -62,7 +62,7 @@
 namespace brave {
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
-#if BUILDFLAG(ENABLE_WIDEVINE)
+#if BUILDFLAG(ENABLE_WIDEVINE) && !BUILDFLAG(IS_ANDROID)
   RegisterWidevineLocalstatePrefsForMigration(registry);
 #endif
 
@@ -115,7 +115,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kDontAskForCrashReporting, false);
 #endif
 
-#if BUILDFLAG(ENABLE_WIDEVINE)
+#if BUILDFLAG(ENABLE_WIDEVINE) && !BUILDFLAG(IS_ANDROID)
   RegisterWidevineLocalstatePrefs(registry);
 #endif
 
