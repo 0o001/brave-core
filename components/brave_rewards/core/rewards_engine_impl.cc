@@ -13,8 +13,8 @@
 #include "brave/components/brave_rewards/core/common/security_util.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
+#include "brave/components/brave_rewards/core/initialization_manager.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
-#include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
 
 using std::placeholders::_1;
 
@@ -49,13 +49,9 @@ RewardsEngineImpl::~RewardsEngineImpl() {
 // mojom::RewardsEngine implementation begin (in the order of appearance in
 // Mojom)
 void RewardsEngineImpl::Initialize(InitializeCallback callback) {
-  if (ready_state_ != ReadyState::kUninitialized) {
-    BLOG(0, "Already initializing");
-    return std::move(callback).Run(mojom::Result::FAILED);
-  }
-
-  ready_state_ = ReadyState::kInitializing;
-  InitializeDatabase(ToLegacyCallback(std::move(callback)));
+  GetHelper<InitializationManager>().Initialize(
+      base::BindOnce(&RewardsEngineImpl::OnInitializationComplete,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void RewardsEngineImpl::GetEnvironment(GetEnvironmentCallback callback) {
@@ -682,16 +678,9 @@ void RewardsEngineImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
 }
 
 void RewardsEngineImpl::Shutdown(ShutdownCallback callback) {
-  if (!IsReady()) {
-    return std::move(callback).Run(mojom::Result::FAILED);
-  }
-
-  ready_state_ = ReadyState::kShuttingDown;
-  client_->ClearAllNotifications();
-
-  database()->FinishAllInProgressContributions(
-      std::bind(&RewardsEngineImpl::OnAllDone, this, _1,
-                ToLegacyCallback(std::move(callback))));
+  GetHelper<InitializationManager>().Shutdown(
+      base::BindOnce(&RewardsEngineImpl::OnShutdownComplete,
+                     weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void RewardsEngineImpl::GetEventLogs(GetEventLogsCallback callback) {
@@ -765,103 +754,37 @@ database::Database* RewardsEngineImpl::database() {
   return &database_;
 }
 
-bool RewardsEngineImpl::IsShuttingDown() const {
-  return ready_state_ == ReadyState::kShuttingDown;
-}
-
-bool RewardsEngineImpl::IsUninitialized() const {
-  return ready_state_ == ReadyState::kUninitialized;
-}
-
 bool RewardsEngineImpl::IsReady() const {
-  return ready_state_ == ReadyState::kReady;
+  return GetHelper<InitializationManager>().IsReady();
 }
 
-void RewardsEngineImpl::InitializeDatabase(LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
-  LegacyResultCallback finish_callback = std::bind(
-      &RewardsEngineImpl::OnInitialized, this, _1, std::move(callback));
-
-  auto database_callback = std::bind(&RewardsEngineImpl::OnDatabaseInitialized,
-                                     this, _1, finish_callback);
-  database()->Initialize(database_callback);
+bool RewardsEngineImpl::IsShuttingDown() const {
+  return GetHelper<InitializationManager>().IsShuttingDown();
 }
 
-void RewardsEngineImpl::OnDatabaseInitialized(mojom::Result result,
-                                              LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
-  if (result != mojom::Result::OK) {
-    BLOG(0, "Database could not be initialized. Error: " << result);
-    callback(result);
-    return;
-  }
-
-  state()->Initialize(base::BindOnce(&RewardsEngineImpl::OnStateInitialized,
-                                     base::Unretained(this),
-                                     std::move(callback)));
-}
-
-void RewardsEngineImpl::OnStateInitialized(LegacyResultCallback callback,
-                                           mojom::Result result) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
-  if (result != mojom::Result::OK) {
-    BLOG(0, "Failed to initialize state");
-    callback(result);
-    return;
-  }
-
-  callback(mojom::Result::OK);
-}
-
-void RewardsEngineImpl::OnInitialized(mojom::Result result,
-                                      LegacyResultCallback callback) {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
-  if (result == mojom::Result::OK) {
-    StartServices();
-  } else {
-    BLOG(0, "Failed to initialize wallet " << result);
-  }
-
+void RewardsEngineImpl::OnInitializationComplete(InitializeCallback callback,
+                                                 bool success) {
   while (!ready_callbacks_.empty()) {
     auto ready_callback = std::move(ready_callbacks_.front());
     ready_callbacks_.pop();
     ready_callback();
   }
 
-  ready_state_ = ReadyState::kReady;
-
-  callback(result);
+  std::move(callback).Run(success ? mojom::Result::OK : mojom::Result::FAILED);
 }
 
-void RewardsEngineImpl::StartServices() {
-  DCHECK(ready_state_ == ReadyState::kInitializing);
-
-  publisher()->SetPublisherServerListTimer();
-  contribution()->SetAutoContributeTimer();
-  contribution()->SetMonthlyContributionTimer();
-  promotion()->Refresh(false);
-  contribution()->Initialize();
-  promotion()->Initialize();
-  api()->Initialize();
-  recovery_.Check();
-}
-
-void RewardsEngineImpl::OnAllDone(mojom::Result result,
-                                  LegacyResultCallback callback) {
-  database()->Close(std::move(callback));
+void RewardsEngineImpl::OnShutdownComplete(ShutdownCallback callback,
+                                           bool success) {
+  std::move(callback).Run(success ? mojom::Result::OK : mojom::Result::FAILED);
 }
 
 template <typename T>
 void RewardsEngineImpl::WhenReady(T callback) {
-  switch (ready_state_) {
-    case ReadyState::kReady:
+  switch (GetHelper<InitializationManager>().state()) {
+    case InitializationManager::State::kReady:
       callback();
       break;
-    case ReadyState::kShuttingDown:
+    case InitializationManager::State::kShuttingDown:
       NOTREACHED();
       break;
     default:

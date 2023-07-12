@@ -387,35 +387,17 @@ class RewardsEngineImpl : public RewardsEngineContext,
 
   zebpay::ZebPay* zebpay() { return &zebpay_; }
 
-  bool IsShuttingDown() const;
-
   // This method is virtualised for test-only purposes.
   virtual database::Database* database();
 
   bool IsReady() const;
 
  private:
-  enum class ReadyState {
-    kUninitialized,
-    kInitializing,
-    kReady,
-    kShuttingDown
-  };
+  bool IsShuttingDown() const;
 
-  bool IsUninitialized() const;
+  void OnInitializationComplete(InitializeCallback callback, bool success);
 
-  virtual void InitializeDatabase(LegacyResultCallback callback);
-
-  void OnDatabaseInitialized(mojom::Result result,
-                             LegacyResultCallback callback);
-
-  void OnStateInitialized(LegacyResultCallback callback, mojom::Result result);
-
-  void OnInitialized(mojom::Result result, LegacyResultCallback callback);
-
-  void StartServices();
-
-  void OnAllDone(mojom::Result result, LegacyResultCallback callback);
+  void OnShutdownComplete(ShutdownCallback callback, bool success);
 
   template <typename T>
   void WhenReady(T callback);
@@ -441,7 +423,7 @@ class RewardsEngineImpl : public RewardsEngineContext,
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;
   std::queue<std::function<void()>> ready_callbacks_;
-  ReadyState ready_state_ = ReadyState::kUninitialized;
+  base::WeakPtrFactory<RewardsEngineImpl> weak_factory_{this};
 };
 
 }  // namespace brave_rewards::internal
