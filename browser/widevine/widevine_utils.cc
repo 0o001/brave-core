@@ -5,6 +5,8 @@
 
 #include "brave/browser/widevine/widevine_utils.h"
 
+#include <string>
+
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/task/task_traits.h"
@@ -13,6 +15,7 @@
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/component_updater/widevine_cdm_component_installer.h"
 #include "chrome/browser/profiles/profile.h"
@@ -79,7 +82,7 @@ void EnableWidevineCdm() {
     return;
 
   SetWidevineOptedIn(true);
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   RegisterWidevineCdmComponent(g_browser_process->component_updater());
 #endif
 }
@@ -89,7 +92,7 @@ void DisableWidevineCdm() {
     return;
 
   SetWidevineOptedIn(false);
-#if !BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)
   g_browser_process->component_updater()->UnregisterComponent(
       kWidevineComponentId);
 #endif

@@ -545,6 +545,7 @@ brave_java_resources = [
   "java/res/drawable/ic_logo_bitflyer.xml",
   "java/res/drawable/ic_logo_bitflyer_colored.xml",
   "java/res/drawable/ic_mask.xml",
+  "java/res/drawable/ic_media.xml",
   "java/res/drawable/ic_menu.xml",
   "java/res/drawable/ic_new_tab_page.xml",
   "java/res/drawable/ic_news.xml",
