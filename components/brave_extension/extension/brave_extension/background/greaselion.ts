@@ -477,6 +477,19 @@ chrome.runtime.onMessageExternal.addListener(
         case 'SupportsGreaselion':
           sendResponse({ supported: true })
           break
+        case 'BraveEducation': {
+          switch (msg.command) {
+            case 'OpenSettings': {
+              chrome.braveEducation.openSettings(msg.url)
+              break
+            }
+            case 'EnableVerticalTabs': {
+              chrome.braveEducation.enableVerticalTabs()
+              break
+            }
+          }
+          break
+        }
       }
     })
   })
