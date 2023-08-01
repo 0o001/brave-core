@@ -916,6 +916,7 @@ provideStrings({
   braveNftsTabEmptyStateDisclaimer: 'Compatible with NFTs on Solana (SPL) and Ethereum (ERC-721).',
   braveNftsTab: 'NFTs',
   braveNftsTabHidden: 'Hidden',
+  braveNftsTabSpam: 'Spam',
   braveNftsTabHide: 'Hide',
   braveNftsTabUnhide: 'Unhide',
   braveNftsTabEdit: 'Edit',

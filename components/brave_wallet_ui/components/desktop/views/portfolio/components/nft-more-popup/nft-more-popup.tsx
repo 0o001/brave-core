@@ -15,18 +15,24 @@ import {
 import { getLocale } from '../../../../../../../common/locale'
 
 interface Props {
-  isHidden: boolean
+  isTokenHidden: boolean
+  isTokenSpam: boolean
   onEditNft: () => void
   onHideNft: () => void
   onUnHideNft: () => void
+  onMoveToSpam: () => void
+  onUnSpam: () => void
 }
 
 export const NftMorePopup = (props: Props) => {
   const {
-    isHidden,
+    isTokenHidden,
+    isTokenSpam,
     onEditNft,
     onHideNft,
-    onUnHideNft
+    onUnHideNft,
+    onUnSpam,
+    onMoveToSpam
   } = props
 
   return (
@@ -35,17 +41,23 @@ export const NftMorePopup = (props: Props) => {
         <ButtonIcon name='edit-pencil' />
         <PopupButtonText>{getLocale('braveNftsTabEdit')}</PopupButtonText>
       </PopupButton>
-      {isHidden
+      {isTokenHidden
         ? (
           <PopupButton onClick={onUnHideNft}>
             <ButtonIcon name='eye-on' />
             <PopupButtonText>{getLocale('braveNftsTabUnhide')}</PopupButtonText>
           </PopupButton>
         ) : (
-          <PopupButton onClick={onHideNft}>
-            <ButtonIcon name='eye-off' />
-            <PopupButtonText>{getLocale('braveNftsTabHide')}</PopupButtonText>
-         </PopupButton>
+          <>
+            <PopupButton onClick={onHideNft}>
+              <ButtonIcon name='eye-off' />
+              <PopupButtonText>{getLocale('braveNftsTabHide')}</PopupButtonText>
+            </PopupButton>
+            <PopupButton onClick={isTokenSpam ? onUnSpam : onMoveToSpam}>
+              <ButtonIcon name='disable-outline' />
+              <PopupButtonText>{isTokenSpam ? 'Unspam' : 'Move to Spam'}</PopupButtonText>
+            </PopupButton>
+          </>
         )
       }
     </StyledWrapper>

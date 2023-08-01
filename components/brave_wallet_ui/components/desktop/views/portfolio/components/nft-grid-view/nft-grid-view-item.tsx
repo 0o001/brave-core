@@ -39,15 +39,17 @@ import {
   NFTSymbol
 } from './style'
 import { translateToNftGateway } from '../../../../../../common/async/lib'
+import { useUpdateNftSpamStatusMutation } from '../../../../../../common/slices/api.slice'
 
 interface Props {
   token: BraveWallet.BlockchainToken
-  isHidden: boolean
+  isTokenHidden: boolean
+  isTokenSpam: boolean
   onSelectAsset: () => void
 }
 
 export const NFTGridViewItem = (props: Props) => {
-  const { token, isHidden, onSelectAsset } = props
+  const { token, isTokenHidden, isTokenSpam, onSelectAsset } = props
 
   // redux
   const showNetworkLogoOnNfts = useSafeWalletSelector(WalletSelectors.showNetworkLogoOnNfts)
@@ -55,10 +57,14 @@ export const NFTGridViewItem = (props: Props) => {
   // state
   const [showMore, setShowMore] = React.useState<boolean>(false)
   const [showEditModal, setShowEditModal] = React.useState<boolean>(false)
+  const [remoteImage, setRemoteImage] = React.useState<string>()
 
   // hooks
   const dispatch = useDispatch()
   const { addOrRemoveTokenInLocalStorage } = useAssetManagement()
+
+  // mutations
+  const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()
 
   // methods
   const onToggleShowMore = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -78,16 +84,27 @@ export const NFTGridViewItem = (props: Props) => {
   const onHideNft = React.useCallback(() => {
     setShowMore(false)
     addOrRemoveTokenInLocalStorage(token, 'remove')
-    dispatch(WalletActions.refreshNetworksAndTokens({}))
+    dispatch(WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true }))
   }, [token, addOrRemoveTokenInLocalStorage])
 
   const onUnHideNft = React.useCallback(() => {
     setShowMore(false)
     addOrRemoveTokenInLocalStorage(token, 'add')
-    dispatch(WalletActions.refreshNetworksAndTokens({}))
+    dispatch(WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true }))
   }, [token, addOrRemoveTokenInLocalStorage])
 
-  const [remoteImage, setRemoteImage] = React.useState<string>()
+  const onMoveToSpam = React.useCallback(async () => {
+    setShowMore(false)
+    await updateNftSpamStatus({ token, status: true })
+    dispatch(WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true }))
+  }, [token])
+  
+  const onUnSpam = React.useCallback(async () => {
+    setShowMore(false)
+    await updateNftSpamStatus({ token, status: false })
+    dispatch(WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true }))
+  }, [token])
+
   React.useEffect(() => {
     let ignore = false
     const tokenImageURL = stripERC20TokenImageURL(token.logo)
@@ -108,10 +125,13 @@ export const NFTGridViewItem = (props: Props) => {
         </VerticalMenu>
         {showMore && (
           <NftMorePopup
-            isHidden={isHidden}
+            isTokenHidden={isTokenHidden}
+            isTokenSpam={isTokenSpam}
             onEditNft={onEditNft}
             onHideNft={onHideNft}
             onUnHideNft={onUnHideNft}
+            onMoveToSpam={onMoveToSpam}
+            onUnSpam={onUnSpam}
           />
         )}
         <DIVForClickableArea onClick={onSelectAsset} />

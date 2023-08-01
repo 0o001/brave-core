@@ -48,6 +48,8 @@ export function createWalletApiBase () {
       'OnRampAssets',
       'OffRampAssets',
       'CoingeckoId'
+      'AutoPinEnabled',
+      'SimpleHashSpamNFTs'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

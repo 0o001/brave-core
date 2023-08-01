@@ -2882,6 +2882,7 @@ export const {
   useGetNftMetadataQuery,
   useGetNftPinningStatusQuery,
   useGetAutopinEnabledQuery,
+  useGetSimpleHashSpamNftsQuery,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,
@@ -2912,6 +2913,8 @@ export const {
   useUpdateUserTokenMutation,
   useGetOnRampAssetsQuery,
   useGetOffRampAssetsQuery
+  useUpdateUserTokenMutation,
+  useUpdateNftSpamStatusMutation
 } = walletApi
 
 // Derived Data Queries
@@ -3092,7 +3095,7 @@ async function getEnabledCoinTypes(
   return enabledCoinTypes
 }
 
-async function getAllNetworksList(
+export async function getAllNetworksList(
   api: WalletApiProxy
 ) {
   const { jsonRpcService } = api
