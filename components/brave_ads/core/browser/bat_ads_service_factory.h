@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_BAT_ADS_SERVICE_FACTORY_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_BAT_ADS_SERVICE_FACTORY_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_BAT_ADS_SERVICE_FACTORY_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_BAT_ADS_SERVICE_FACTORY_H_
 
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -21,4 +21,4 @@ class BatAdsServiceFactory {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_BAT_ADS_SERVICE_FACTORY_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_BAT_ADS_SERVICE_FACTORY_H_

@@ -29,7 +29,7 @@ source_set("profiles") {
     "//base",
     "//brave/browser/gcm_driver",
     "//brave/common",
-    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_wallet/browser",

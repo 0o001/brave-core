@@ -11,7 +11,7 @@
 #include "base/strings/strcat.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/browser/ntp_background/ntp_p3a_helper_impl.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/ads_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"

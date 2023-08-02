@@ -9,7 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/ads_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/web_ui_message_handler.h"
 

@@ -23,7 +23,7 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
+#include "brave/components/brave_ads/core/browser/component_updater/resource_component.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"

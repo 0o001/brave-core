@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_FREQUENCY_CAPPING_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_FREQUENCY_CAPPING_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_FREQUENCY_CAPPING_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_FREQUENCY_CAPPING_HELPER_H_
 
 #include <string>
 #include <vector>
@@ -52,4 +52,4 @@ class FrequencyCappingHelper {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_FREQUENCY_CAPPING_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_FREQUENCY_CAPPING_HELPER_H_

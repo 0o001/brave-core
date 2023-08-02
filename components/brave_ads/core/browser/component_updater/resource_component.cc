@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
+#include "brave/components/brave_ads/core/browser/component_updater/resource_component.h"
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
@@ -13,7 +13,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/thread_pool.h"
-#include "brave/components/brave_ads/browser/component_updater/component_util.h"
+#include "brave/components/brave_ads/core/browser/component_updater/component_util.h"
 
 namespace brave_ads {
 

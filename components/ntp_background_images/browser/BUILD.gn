@@ -63,7 +63,7 @@ static_library("browser") {
     deps += [ "//brave/extensions:common" ]
   } else {
     deps += [
-      "//brave/components/brave_ads/browser",
+      "//brave/components/brave_ads/core/browser",
       "//brave/components/brave_referrals/browser",
       "//content/public/browser",
       "//content/public/common",

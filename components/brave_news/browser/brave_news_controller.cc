@@ -22,7 +22,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/ads_service.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"

@@ -197,9 +197,9 @@ test("brave_unit_tests") {
     "//brave/chromium_src/net/base:unit_tests",
     "//brave/components/api_request_helper:api_request_helper_unit_tests",
     "//brave/components/brave_adaptive_captcha/test:brave_adaptive_captcha_unit_tests",
-    "//brave/components/brave_ads/browser:test_support",
     "//brave/components/brave_ads/content/browser",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser:test_support",
     "//brave/components/brave_ads/core/test:brave_ads_unit_tests",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_federated:brave_federated_tests",
@@ -310,8 +310,8 @@ test("brave_unit_tests") {
     # test.
     # TODO(keur): Reminder to move this out when we migrate
     # stats browser tests into unit tests.
-    "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_stats/browser",
@@ -849,9 +849,9 @@ test("brave_browser_tests") {
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/web_discovery:browser_tests",
     "//brave/common",
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_ads/browser:test_support",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser",
+    "//brave/components/brave_ads/core/browser:test_support",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_news/browser",
     "//brave/components/brave_perf_predictor/browser",

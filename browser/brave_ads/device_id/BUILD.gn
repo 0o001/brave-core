@@ -22,7 +22,7 @@ source_set("device_id") {
 
   deps = [
     "//base",
-    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core/browser",
     "//components/metrics",
     "//content/public/browser",
     "//crypto",

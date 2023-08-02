@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/device_id.h"
+#include "brave/components/brave_ads/core/browser/ads_service_mock.h"
 
 namespace brave_ads {
 
-DeviceId::DeviceId() = default;
+AdsServiceMock::AdsServiceMock() = default;
 
-DeviceId::~DeviceId() = default;
+AdsServiceMock::~AdsServiceMock() = default;
 
 }  // namespace brave_ads

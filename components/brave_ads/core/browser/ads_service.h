@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_ADS_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_ADS_SERVICE_H_
 
 #include <string>
 #include <vector>
@@ -12,8 +12,8 @@
 #include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/browser/ads_service_callback.h"
-#include "brave/components/brave_ads/browser/ads_service_observer.h"
+#include "brave/components/brave_ads/core/browser/ads_service_callback.h"
+#include "brave/components/brave_ads/core/browser/ads_service_observer.h"
 #include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -266,4 +266,4 @@ class AdsService : public KeyedService {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_ADS_SERVICE_H_

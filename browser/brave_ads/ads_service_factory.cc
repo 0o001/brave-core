@@ -13,7 +13,7 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/brave_rewards/rewards_util.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_ads/browser/ads_service_impl.h"
+#include "brave/components/brave_ads/core/browser/ads_service_impl.h"
 #include "brave/components/brave_federated/brave_federated_service.h"
 #include "brave/components/brave_federated/data_store_service.h"
 #include "brave/components/brave_federated/notification_ad_task_constants.h"

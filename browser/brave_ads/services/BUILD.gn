@@ -13,8 +13,8 @@ source_set("services") {
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
-    "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser",
     "//brave/components/services/bat_ads:lib",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_RESOURCE_COMPONENT_H_
-#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_RESOURCE_COMPONENT_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_COMPONENT_UPDATER_RESOURCE_COMPONENT_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_COMPONENT_UPDATER_RESOURCE_COMPONENT_H_
 
 #include <map>
 #include <string>
@@ -12,8 +12,8 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
-#include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
-#include "brave/components/brave_ads/browser/component_updater/resource_info.h"
+#include "brave/components/brave_ads/core/browser/component_updater/resource_component_observer.h"
+#include "brave/components/brave_ads/core/browser/component_updater/resource_info.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
@@ -63,4 +63,4 @@ class ResourceComponent : public brave_component_updater::BraveComponent {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_RESOURCE_COMPONENT_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_COMPONENT_UPDATER_RESOURCE_COMPONENT_H_

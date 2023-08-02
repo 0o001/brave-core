@@ -67,7 +67,8 @@ if (is_android) {
     "//brave/browser/brave_rewards/android/brave_rewards_native_worker.h",
   ]
 
-  brave_browser_brave_rewards_deps += [ "//brave/components/brave_ads/browser" ]
+  brave_browser_brave_rewards_deps +=
+      [ "//brave/components/brave_ads/core/browser" ]
 }
 
 if (!is_android) {

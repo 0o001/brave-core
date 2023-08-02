@@ -6,7 +6,7 @@
 #include "chrome/browser/profiles/pref_service_builder_utils.h"
 
 #include "brave/browser/brave_profile_prefs.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/ads_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"

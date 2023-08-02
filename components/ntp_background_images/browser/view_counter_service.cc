@@ -16,7 +16,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/ads_service.h"
 #include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"

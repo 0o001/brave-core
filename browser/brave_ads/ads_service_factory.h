@@ -9,7 +9,7 @@
 #include <memory>
 
 #include "brave/browser/brave_ads/tooltips/ads_tooltips_delegate_impl.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/ads_service.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
 class Profile;

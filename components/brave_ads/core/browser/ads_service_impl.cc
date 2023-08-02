@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/browser/ads_service_impl.h"
+#include "brave/components/brave_ads/core/browser/ads_service_impl.h"
 
 #include <utility>
 
@@ -30,12 +30,12 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/common/brave_channel_info.h"
-#include "brave/components/brave_ads/browser/ads_p2a.h"
-#include "brave/components/brave_ads/browser/bat_ads_service_factory.h"
-#include "brave/components/brave_ads/browser/component_updater/resource_component.h"
-#include "brave/components/brave_ads/browser/device_id.h"
-#include "brave/components/brave_ads/browser/frequency_capping_helper.h"
-#include "brave/components/brave_ads/browser/reminder_util.h"
+#include "brave/components/brave_ads/core/browser/ads_p2a.h"
+#include "brave/components/brave_ads/core/browser/bat_ads_service_factory.h"
+#include "brave/components/brave_ads/core/browser/component_updater/resource_component.h"
+#include "brave/components/brave_ads/core/browser/device_id.h"
+#include "brave/components/brave_ads/core/browser/frequency_capping_helper.h"
+#include "brave/components/brave_ads/core/browser/reminder_util.h"
 #include "brave/components/brave_ads/core/common/brave_ads_feature.h"
 #include "brave/components/brave_ads/core/common/custom_notification_ad_feature.h"
 #include "brave/components/brave_ads/core/common/notification_ad_feature.h"
@@ -72,7 +72,7 @@
 #endif
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
-#include "brave/components/brave_ads/browser/ads_tooltips_delegate.h"
+#include "brave/components/brave_ads/core/browser/ads_tooltips_delegate.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/simple_url_loader.h"

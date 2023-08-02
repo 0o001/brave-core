@@ -20,7 +20,7 @@
 #include "brave/browser/ui/brave_rewards/tip_panel_coordinator.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
-#include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/core/browser/ads_service.h"
 #include "brave/components/brave_ads/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/public/geographic/ads_util.h"
 #include "brave/components/brave_ads/core/public/geographic/subdivision_targeting/supported_subdivisions.h"
