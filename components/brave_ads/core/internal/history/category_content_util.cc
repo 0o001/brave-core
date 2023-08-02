@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
 
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
-#include "brave/components/brave_ads/core/public/category_content_info.h"
+#include "brave/components/brave_ads/core/public/history/category_content_info.h"
 
 namespace brave_ads {
 

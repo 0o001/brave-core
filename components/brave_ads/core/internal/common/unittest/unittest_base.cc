@@ -29,9 +29,9 @@
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
 #include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
-#include "brave/components/brave_ads/core/public/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/public/database.h"
-#include "brave/components/brave_ads/core/public/flags_util.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/database/database.h"
+#include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
 namespace brave_ads {

@@ -18,8 +18,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/inline_content_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

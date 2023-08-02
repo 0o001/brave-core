@@ -22,8 +22,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/creative_promoted_content_ads_database_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/promoted_content_ads/promoted_content_ad_builder.h"
 #include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/promoted_content_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

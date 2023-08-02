@@ -21,9 +21,9 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/history_item_info.h"
-#include "brave/components/brave_ads/core/public/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

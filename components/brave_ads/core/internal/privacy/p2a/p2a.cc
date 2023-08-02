@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/privacy/p2a/p2a.h"
 
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/privacy/p2a/p2a_value_util.h"
 
 namespace brave_ads::privacy::p2a {

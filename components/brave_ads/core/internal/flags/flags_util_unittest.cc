@@ -14,7 +14,7 @@
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_command_line_switch_util.h"
 #include "brave/components/brave_ads/core/internal/flags/environment/environment_types_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/flags/flag_constants.h"
-#include "brave/components/brave_ads/core/public/flags_util.h"
+#include "brave/components/brave_ads/core/public/flags/flags_util.h"
 #include "components/variations/variations_switches.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*

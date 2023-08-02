@@ -10,8 +10,8 @@
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/notification_ad_builder.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/notification_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

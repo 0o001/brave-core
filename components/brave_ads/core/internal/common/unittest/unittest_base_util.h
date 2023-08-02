@@ -9,8 +9,8 @@
 #include <string>
 
 #include "base/files/scoped_temp_dir.h"
-#include "brave/components/brave_ads/core/internal/ads_client_mock.h"
-#include "brave/components/brave_ads/core/public/database.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_mock.h"
+#include "brave/components/brave_ads/core/public/database/database.h"
 
 namespace brave_ads {
 

@@ -12,8 +12,8 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_info.h"
 #include "brave/components/brave_ads/core/internal/user_attention/user_activity/user_activity_event_types.h"
-#include "brave/components/brave_ads/core/public/ads_client_notifier_observer.h"
-#include "brave/components/brave_ads/core/public/page_transition_types.h"
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+#include "brave/components/brave_ads/core/public/user_attention/page_transition_types.h"
 
 namespace base {
 class TimeDelta;

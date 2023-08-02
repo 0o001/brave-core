@@ -17,7 +17,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
-#include "brave/components/brave_ads/core/public/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 
 namespace brave_ads {
 

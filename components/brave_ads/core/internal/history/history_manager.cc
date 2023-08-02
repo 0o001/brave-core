@@ -17,12 +17,12 @@
 #include "brave/components/brave_ads/core/internal/history/filters/history_filter_factory.h"
 #include "brave/components/brave_ads/core/internal/history/history_util.h"
 #include "brave/components/brave_ads/core/internal/history/sorts/history_sort_factory.h"
-#include "brave/components/brave_ads/core/public/ad_content_info.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/confirmation_type.h"
-#include "brave/components/brave_ads/core/public/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/public/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 
 namespace brave_ads {
 

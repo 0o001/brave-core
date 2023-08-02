@@ -3,66 +3,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-static_library("core") {
+group("core") {
   deps = [ "//brave/components/brave_ads/core/internal" ]
 
   public_deps = [
-    ":public",
-    "//brave/components/brave_ads/core/common"
-  ]
-}
-
-source_set("public") {
-  sources = [
-    "public/ad_constants.h",
-    "public/ad_content_info.h",
-    "public/ad_content_value_util.h",
-    "public/ad_event_history.h",
-    "public/ad_info.h",
-    "public/ad_type.h",
-    "public/ads.h",
-    "public/ads_callback.h",
-    "public/ads_client.h",
-    "public/ads_client_callback.h",
-    "public/ads_client_notifier.h",
-    "public/ads_client_notifier_observer.h",
-    "public/ads_util.h",
-    "public/category_content_info.h",
-    "public/category_content_value_util.h",
-    "public/confirmation_type.h",
-    "public/database.h",
-    "public/export.h",
-    "public/flags_util.h",
-    "public/history_filter_types.h",
-    "public/history_item_info.h",
-    "public/history_item_value_util.h",
-    "public/history_sort_types.h",
-    "public/inline_content_ad_constants.h",
-    "public/inline_content_ad_info.h",
-    "public/inline_content_ad_value_util.h",
-    "public/new_tab_page_ad_constants.h",
-    "public/new_tab_page_ad_info.h",
-    "public/new_tab_page_ad_value_util.h",
-    "public/new_tab_page_ad_wallpaper_focal_point_info.h",
-    "public/new_tab_page_ad_wallpaper_info.h",
-    "public/notification_ad_constants.h",
-    "public/notification_ad_info.h",
-    "public/notification_ad_value_util.h",
-    "public/page_transition_types.h",
-    "public/promoted_content_ad_constants.h",
-    "public/promoted_content_ad_info.h",
-    "public/promoted_content_ad_value_util.h",
-    "public/supported_subdivisions.h",
-  ]
-
-  deps = [
-    "//base",
-    "//sql",
-    "//url",
-  ]
-
-  public_deps = [
-    "//brave/components/brave_ads/core/common/interfaces",
-    "//brave/components/brave_federated/public/interfaces",
+    "//brave/components/brave_ads/core/common",
+    "//brave/components/brave_ads/core/public:headers",
   ]
 }

@@ -11,9 +11,9 @@
 #include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/export.h"
-#include "brave/components/brave_ads/core/public/history_filter_types.h"
-#include "brave/components/brave_ads/core/public/history_item_info.h"
-#include "brave/components/brave_ads/core/public/history_sort_types.h"
+#include "brave/components/brave_ads/core/public/history/history_filter_types.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/history_sort_types.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {

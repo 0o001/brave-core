@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_new_tab_page_ads_diagnostic_entry.h"
 
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 

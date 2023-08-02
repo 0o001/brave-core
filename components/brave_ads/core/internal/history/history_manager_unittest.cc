@@ -20,11 +20,11 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
-#include "brave/components/brave_ads/core/public/history_item_info.h"
-#include "brave/components/brave_ads/core/public/inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/public/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

@@ -11,7 +11,7 @@ config("internal_config") {
   ]
 }
 
-source_set("internal") {
+static_library("internal") {
   configs += [
     ":internal_config",
     "//build/config/compiler:wexit_time_destructors",
@@ -503,15 +503,8 @@ source_set("internal") {
     "ads/serving/targeting/user_model_builder.h",
     "ads/serving/targeting/user_model_info.cc",
     "ads/serving/targeting/user_model_info.h",
-    "ads_client_helper.cc",
-    "ads_client_helper.h",
-    "ads_client_notifier.cc",
-    "ads_client_notifier_observer.cc",
-    "ads_client_notifier_queue.cc",
-    "ads_client_notifier_queue.h",
     "ads_impl.cc",
     "ads_impl.h",
-    "ads_util.cc",
     "browser/browser_manager.cc",
     "browser/browser_manager.h",
     "browser/browser_manager_observer.h",
@@ -572,6 +565,12 @@ source_set("internal") {
     "catalog/catalog_url_request_json_reader.h",
     "catalog/catalog_util.cc",
     "catalog/catalog_util.h",
+    "client/ads_client_helper.cc",
+    "client/ads_client_helper.h",
+    "client/ads_client_notifier.cc",
+    "client/ads_client_notifier_observer.cc",
+    "client/ads_client_notifier_queue.cc",
+    "client/ads_client_notifier_queue.h",
     "common/calendar/calendar_leap_year_util.cc",
     "common/calendar/calendar_leap_year_util.h",
     "common/calendar/calendar_util.cc",
@@ -884,6 +883,7 @@ source_set("internal") {
     "flags/environment/environment_flag_util.h",
     "flags/flag_constants.h",
     "flags/flags_util.cc",
+    "geographic/ads_util.cc",
     "geographic/subdivision_targeting/subdivision_targeting.cc",
     "geographic/subdivision_targeting/subdivision_targeting.h",
     "geographic/subdivision_targeting/subdivision_targeting_util.cc",
@@ -1254,8 +1254,8 @@ source_set("internal") {
   ]
 
   public_deps = [
-    "//brave/components/brave_ads/core:public",
     "//brave/components/brave_ads/core/common/interfaces",
+    "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_federated/public/interfaces",
   ]
 }

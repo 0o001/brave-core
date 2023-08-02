@@ -2,6 +2,18 @@
 
 Users earn tokens by viewing privacy-first Brave Ads. Ads presented are based on the user's interests, as inferred from the user's browsing behavior. No personal data or browsing history should ever leave the browser.
 
+Brave Ads is a [layered
+component](https://sites.google.com/a/chromium.org/dev/developers/design-documents/layered-components-design).
+It has the following structure:
+
+- core/: Higher-level code that is publicly visible to consumers that does not depend on the Content API.
+  - browser/: Browser process code. Code therein will be transitioned to public/ and/or internal/.
+  - common/: Code shared by the browser/ and the internal/. Code therein will be transitioned to public/ and/or internal/.
+  - internal/: The internal implementation of public/. Not visible to consumers.
+  - public/: The public API surface of the component.
+- content/: The code layered above core/ that integrates with the Content API.
+  - browser/: Browser process code.
+
 ## Glossary of Terms
 
 A place to define all specific terms and vocabulary for the Brave Ads component, please use this glossary to ensure consistency throughout the codebase. If other stakeholders use different terminology, please consider updating so we all speak the same language.

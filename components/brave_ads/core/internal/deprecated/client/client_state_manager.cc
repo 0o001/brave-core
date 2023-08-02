@@ -13,14 +13,14 @@
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ads/serving/targeting/contextual/text_classification/text_classification_feature.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager_constants.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/history/history_constants.h"
 #include "brave/components/brave_ads/core/public/ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_type.h"
-#include "brave/components/brave_ads/core/public/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "build/build_config.h"  // IWYU pragma: keep
 
 namespace brave_ads {

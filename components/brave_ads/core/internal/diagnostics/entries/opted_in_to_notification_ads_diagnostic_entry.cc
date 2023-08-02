@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/opted_in_to_notification_ads_diagnostic_entry.h"
 
 #include "brave/components/brave_ads/core/common/pref_names.h"
-#include "brave/components/brave_ads/core/internal/ads_client_helper.h"
+#include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/strings/string_conversions_util.h"
 
 namespace brave_ads {
