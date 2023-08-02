@@ -19,9 +19,9 @@
         ]
       },
       {
-        "name": "enableVerticalTabs",
+        "name": "openVerticalTabsSettings",
         "type": "function",
-        "description": "Enables the vertical tabs feature",
+        "description": "Opens the Brave settings page and highlights the vertical tabs setting with IPH",
         "parameters": []
       }
     ]

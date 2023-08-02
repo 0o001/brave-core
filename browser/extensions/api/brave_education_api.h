@@ -8,8 +8,7 @@
 
 #include "extensions/browser/extension_function.h"
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 class BraveEducationOpenSettingsFunction : public ExtensionFunction {
  public:
@@ -21,17 +20,17 @@ class BraveEducationOpenSettingsFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveEducationEnableVerticalTabsFunction : public ExtensionFunction {
+class BraveEducationOpenVerticalTabsSettingsFunction
+  : public ExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveEducation.enableVerticalTabs", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveEducation.openVerticalTabsSettings", UNKNOWN)
 
  protected:
-  ~BraveEducationEnableVerticalTabsFunction() override {}
+  ~BraveEducationOpenVerticalTabsSettingsFunction() override {}
 
   ResponseAction Run() override;
 };
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api
 
 #endif  // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_EDUCATION_API_H_

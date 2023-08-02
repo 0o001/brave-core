@@ -91,6 +91,8 @@ source_set("ui") {
       "browser_commands.cc",
       "browser_commands.h",
       "browser_dialogs.h",
+      "browser_element_identifiers.cc",
+      "browser_element_identifiers.h",
       "content_settings/brave_autoplay_blocked_image_model.cc",
       "content_settings/brave_autoplay_blocked_image_model.h",
       "content_settings/brave_autoplay_content_setting_bubble_model.cc",

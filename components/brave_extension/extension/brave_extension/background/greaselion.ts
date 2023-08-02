@@ -480,11 +480,14 @@ chrome.runtime.onMessageExternal.addListener(
         case 'BraveEducation': {
           switch (msg.command) {
             case 'OpenSettings': {
-              chrome.braveEducation.openSettings(msg.url)
-              break
-            }
-            case 'EnableVerticalTabs': {
-              chrome.braveEducation.enableVerticalTabs()
+              switch (msg.highlight) {
+                case 'vertical-tabs':
+                  chrome.braveEducation.openVerticalTabsSettings()
+                  break
+                default:
+                  chrome.braveEducation.openSettings(msg.url)
+                  break
+              }
               break
             }
           }

@@ -5,14 +5,18 @@
 
 #include "brave/browser/extensions/api/brave_education_api.h"
 
-#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/browser_element_identifiers.h"
 #include "brave/common/extensions/api/brave_education.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
+#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/user_education/open_page_and_show_help_bubble.h"
+#include "chrome/common/webui_url_constants.h"
+#include "ui/base/l10n/l10n_util.h"
 
-namespace extensions {
-namespace api {
+namespace extensions::api {
 
 ExtensionFunction::ResponseAction
 BraveEducationOpenSettingsFunction::Run() {
@@ -32,13 +36,23 @@ BraveEducationOpenSettingsFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction
-BraveEducationEnableVerticalTabsFunction::Run() {
+BraveEducationOpenVerticalTabsSettingsFunction::Run() {
   return RespondNow([&] {
-    auto* profile = Profile::FromBrowserContext(browser_context());
-    profile->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+    OpenPageAndShowHelpBubble::Params params;
+    params.target_url = chrome::GetSettingsUrl(chrome::kAppearanceSubPage);
+    params.bubble_anchor_id = kVerticalTabsSettingElementId;
+    params.bubble_arrow = user_education::HelpBubbleArrow::kBottomLeft;
+    params.bubble_text = l10n_util::GetStringUTF16(
+        IDS_SETTINGS_VERTICAL_TABS_IPH_BUBBLE_TEXT);
+    params.close_button_alt_text_id =
+        IDS_SETTINGS_VERTICAL_TABS_IPH_BUBBLE_CLOSE_BUTTON_ARIA_LABEL_TEXT;
+
+    if (auto* browser = chrome::FindLastActive()) {
+      OpenPageAndShowHelpBubble::Start(browser, std::move(params));
+    }
+
     return NoArguments();
   }());
 }
 
-}  // namespace api
-}  // namespace extensions
+}  // namespace extensions::api
