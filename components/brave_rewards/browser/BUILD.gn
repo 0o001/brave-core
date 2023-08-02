@@ -41,7 +41,6 @@ static_library("browser") {
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/brave_ads/core",
-    "//brave/components/brave_ads/core/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/common/buildflags",
     "//brave/components/resources",

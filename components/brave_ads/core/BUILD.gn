@@ -6,7 +6,10 @@
 static_library("core") {
   deps = [ "//brave/components/brave_ads/core/internal" ]
 
-  public_deps = [ ":public" ]
+  public_deps = [
+    ":public",
+    "//brave/components/brave_ads/core/common"
+  ]
 }
 
 source_set("public") {

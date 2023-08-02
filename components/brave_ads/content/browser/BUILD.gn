@@ -17,7 +17,6 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_ads/core",
-    "//brave/components/brave_ads/core/common",
     "//brave/components/brave_search/common",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",

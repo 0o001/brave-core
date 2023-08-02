@@ -31,7 +31,6 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_adaptive_captcha",
     "//brave/components/brave_ads/core",
-    "//brave/components/brave_ads/core/common",
     "//brave/components/brave_ads/resources",
     "//brave/components/brave_component_updater/browser",
     "//brave/components/l10n/common",
