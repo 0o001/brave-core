@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads/inline_content_ad_value_util.h"
@@ -24,6 +23,7 @@
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_item_value_util.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

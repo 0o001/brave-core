@@ -8,10 +8,10 @@
 #include <vector>
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 #include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/ads/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/public/confirmation_type.h"
 
 namespace brave_ads {

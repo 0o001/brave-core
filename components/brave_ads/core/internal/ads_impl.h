@@ -9,8 +9,6 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-forward.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_handler.h"
@@ -24,6 +22,8 @@
 #include "brave/components/brave_ads/core/public/history/history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom-shared.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace base {

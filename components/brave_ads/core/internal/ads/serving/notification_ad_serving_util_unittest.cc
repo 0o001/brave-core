@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/ads/serving/notification_ad_serving_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/public/pref/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

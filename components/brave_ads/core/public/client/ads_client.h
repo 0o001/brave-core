@@ -12,9 +12,9 @@
 
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
 #include "brave/components/brave_ads/core/public/export.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

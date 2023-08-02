@@ -5,8 +5,8 @@
 
 #import <Network/Network.h>
 #import <UIKit/UIKit.h>
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
 
 #import "ads_client_bridge.h"
@@ -24,7 +24,6 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
-#include "brave/components/brave_ads/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads/ad_event/ad_event_history.h"
 #include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
@@ -40,6 +39,7 @@
 #include "brave/components/brave_ads/core/public/history/history_filter_types.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
 #include "brave/components/brave_ads/core/public/history/history_sort_types.h"
+#include "brave/components/brave_ads/core/public/pref/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
 #import "brave/ios/browser/api/common/common_operations.h"

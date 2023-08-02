@@ -8,10 +8,10 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ad_type.h"
 #include "brave/components/brave_ads/core/public/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/export.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom-shared.h"
 #include "url/gurl.h"
 
 namespace brave_ads {

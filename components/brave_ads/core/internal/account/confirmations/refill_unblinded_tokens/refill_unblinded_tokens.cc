@@ -13,7 +13,6 @@
 #include "base/notreached.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/refill_unblinded_tokens/get_signed_tokens_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/refill_unblinded_tokens/request_signed_tokens_url_request_builder.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuer_types.h"
@@ -34,6 +33,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_tokens/unblinded_token_util.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom.h"
 #include "net/http/http_status_code.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 

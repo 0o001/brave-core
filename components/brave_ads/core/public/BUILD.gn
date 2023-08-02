@@ -19,12 +19,15 @@ source_set("headers") {
     "ads/new_tab_page_ad_wallpaper_focal_point_info.h",
     "ads/new_tab_page_ad_wallpaper_info.h",
     "ads/notification_ad_constants.h",
+    "ads/notification_ad_feature.h",
     "ads/notification_ad_info.h",
     "ads/notification_ad_value_util.h",
     "ads/promoted_content_ad_constants.h",
     "ads/promoted_content_ad_info.h",
     "ads/promoted_content_ad_value_util.h",
+    "ads/search_result_ad_feature.h",
     "ads_callback.h",
+    "brave_ads_feature.h",
     "client/ads_client.h",
     "client/ads_client_callback.h",
     "client/ads_client_notifier.h",
@@ -43,7 +46,9 @@ source_set("headers") {
     "history/history_item_info.h",
     "history/history_item_value_util.h",
     "history/history_sort_types.h",
+    "pref/pref_names.h",
     "user_attention/page_transition_types.h",
+    "user_attention/user_attention_feature.h",
   ]
 
   deps = [
@@ -53,7 +58,7 @@ source_set("headers") {
   ]
 
   public_deps = [
-    "//brave/components/brave_ads/core/common/interfaces",
+    "//brave/components/brave_ads/core/public/mojom",
     "//brave/components/brave_federated/public/interfaces",
   ]
 }

@@ -14,7 +14,7 @@ mojom("interfaces") {
   ]
 
   deps = [
-    "//brave/components/brave_ads/core/common/interfaces",
+    "//brave/components/brave_ads/core/public/mojom",
     "//brave/components/brave_federated/public/interfaces",
   ]
 }

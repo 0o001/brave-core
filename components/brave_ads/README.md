@@ -6,9 +6,8 @@ Brave Ads is a [layered
 component](https://sites.google.com/a/chromium.org/dev/developers/design-documents/layered-components-design).
 It has the following structure:
 
-- core/: Higher-level code that is publicly visible to consumers that does not depend on the Content API.
-  - browser/: Browser process code. Code therein will be transitioned to public/ and/or internal/.
-  - common/: Code shared by the browser/ and the internal/. Code therein will be transitioned to public/ and/or internal/.
+- core/: The shared code that does not depend on the Content API.
+  - browser/: Browser process code which is specific for Desktop and Android platforms. Code therein will be transitioned to public/ and/or internal/.
   - internal/: The internal implementation of public/. Not visible to consumers.
   - public/: The public API surface of the component.
 - content/: The code layered above core/ that integrates with the Content API.

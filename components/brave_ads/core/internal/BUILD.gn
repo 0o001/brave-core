@@ -279,6 +279,7 @@ static_library("internal") {
     "ads/new_tab_page_ad_value_util.cc",
     "ads/new_tab_page_ad_wallpaper_focal_point_info.cc",
     "ads/new_tab_page_ad_wallpaper_info.cc",
+    "ads/notification_ad_feature.cc",
     "ads/notification_ad_handler.cc",
     "ads/notification_ad_handler.h",
     "ads/notification_ad_handler_util.cc",
@@ -291,6 +292,7 @@ static_library("internal") {
     "ads/promoted_content_ad_handler.h",
     "ads/promoted_content_ad_info.cc",
     "ads/promoted_content_ad_value_util.cc",
+    "ads/search_result_ad_feature.cc",
     "ads/search_result_ad_handler.cc",
     "ads/search_result_ad_handler.h",
     "ads/serving/choose/ad_predictor_info.h",
@@ -505,6 +507,7 @@ static_library("internal") {
     "ads/serving/targeting/user_model_info.h",
     "ads_impl.cc",
     "ads_impl.h",
+    "brave_ads_feature.cc",
     "browser/browser_manager.cc",
     "browser/browser_manager.h",
     "browser/browser_manager_observer.h",
@@ -1007,6 +1010,7 @@ static_library("internal") {
     "ml/transformation/transformation.cc",
     "ml/transformation/transformation.h",
     "ml/transformation/transformation_types.h",
+    "pref/pref_names.cc",
     "privacy/challenge_bypass_ristretto/batch_dleq_proof.cc",
     "privacy/challenge_bypass_ristretto/batch_dleq_proof.h",
     "privacy/challenge_bypass_ristretto/blinded_token.cc",
@@ -1183,6 +1187,7 @@ static_library("internal") {
     "user_attention/user_activity/user_activity_trigger_info.h",
     "user_attention/user_activity/user_activity_util.cc",
     "user_attention/user_activity/user_activity_util.h",
+    "user_attention/user_attention_feature.cc",
     "user_attention/user_idle_detection/user_idle_detection.cc",
     "user_attention/user_idle_detection/user_idle_detection.h",
     "user_attention/user_idle_detection/user_idle_detection_feature.cc",
@@ -1230,7 +1235,6 @@ static_library("internal") {
 
   deps = [
     "//base",
-    "//brave/components/brave_ads/core/common",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core",
@@ -1254,8 +1258,8 @@ static_library("internal") {
   ]
 
   public_deps = [
-    "//brave/components/brave_ads/core/common/interfaces",
     "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_ads/core/public/mojom",
     "//brave/components/brave_federated/public/interfaces",
   ]
 }

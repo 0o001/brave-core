@@ -24,7 +24,7 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
 #include "brave/components/brave_ads/core/browser/ads_service.h"
-#include "brave/components/brave_ads/core/common/pref_names.h"
+#include "brave/components/brave_ads/core/public/pref/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/common/rewards_util.h"

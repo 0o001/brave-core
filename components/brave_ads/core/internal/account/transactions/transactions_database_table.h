@@ -10,11 +10,11 @@
 #include <utility>
 
 #include "base/functional/callback_forward.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_callback.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom-forward.h"
 
 namespace base {
 class Time;

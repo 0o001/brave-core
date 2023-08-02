@@ -10,8 +10,6 @@
 
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
@@ -31,6 +29,8 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/public/ad_type.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/public/pref/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 
 namespace brave_ads {

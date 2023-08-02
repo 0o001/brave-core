@@ -9,7 +9,6 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_helper.h"
@@ -27,6 +26,7 @@
 #include "brave/components/brave_ads/core/public/history/ad_content_info.h"
 #include "brave/components/brave_ads/core/public/history/ad_content_value_util.h"
 #include "brave/components/brave_ads/core/public/history/category_content_value_util.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 
 namespace brave_ads {
 

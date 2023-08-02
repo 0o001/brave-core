@@ -7,9 +7,9 @@
 
 #include <string>
 
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/privacy/locale/country_code_util.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom.h"
 #include "brave/components/l10n/common/locale_util.h"
 
 namespace brave_ads {

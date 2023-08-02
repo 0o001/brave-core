@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
@@ -25,6 +24,7 @@
 #include "brave/components/brave_ads/core/public/ads/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads/promoted_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/history/history_item_info.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom-shared.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

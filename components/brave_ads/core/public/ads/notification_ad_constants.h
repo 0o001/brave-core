@@ -6,7 +6,24 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_NOTIFICATION_AD_CONSTANTS_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_PUBLIC_ADS_NOTIFICATION_AD_CONSTANTS_H_
 
+#include <cstdint>
+
+#include "build/build_config.h"
+
 namespace brave_ads {
+
+// Brave Ads per hour are user configurable within the brave://rewards ads UI
+constexpr int64_t kDefaultBraveRewardsNotificationAdsPerHour = 10;
+
+// Default ad notification timeout in seconds.
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+constexpr int kDefaultNotificationAdTimeout = 120;
+#else
+constexpr int kDefaultNotificationAdTimeout = 30;
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+
+// Do not fallback to custom notification ad by default
+constexpr bool kDefaultCanFallbackToCustomNotificationAds = false;
 
 constexpr char kNotificationAdPlacementIdKey[] = "uuid";
 constexpr char kNotificationAdCreativeInstanceIdKey[] = "creative_instance_id";

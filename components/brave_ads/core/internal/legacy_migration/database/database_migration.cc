@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"
@@ -28,6 +27,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/segments_database_table.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/database/database_constants.h"
 #include "brave/components/brave_ads/core/internal/processors/contextual/text_embedding/text_embedding_html_events_database_table.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom.h"
 
 namespace brave_ads::database {
 

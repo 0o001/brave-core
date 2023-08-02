@@ -9,7 +9,6 @@
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_dynamic_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_user_data_builder.h"
@@ -24,6 +23,7 @@
 #include "brave/components/brave_ads/core/internal/privacy/tokens/token_generator_interface.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_info.h"
 #include "brave/components/brave_ads/core/internal/privacy/tokens/unblinded_payment_tokens/unblinded_payment_token_util.h"
+#include "brave/components/brave_ads/core/public/pref/pref_names.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

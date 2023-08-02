@@ -20,6 +20,9 @@ static_library("browser") {
     "component_updater/resource_component.h",
     "component_updater/resource_component_observer.h",
     "component_updater/resource_info.h",
+    "custom_notification_ad_constants.h",
+    "custom_notification_ad_feature.cc",
+    "custom_notification_ad_feature.h",
     "frequency_capping_helper.cc",
     "frequency_capping_helper.h",
     "reminder_util.cc",
@@ -46,7 +49,7 @@ static_library("browser") {
     "//url",
   ]
 
-  public_deps = [ "//brave/components/brave_ads/core/common/interfaces" ]
+  public_deps = [ "//brave/components/brave_ads/core/public/mojom" ]
 
   # TODO(https://github.com/brave/brave-browser/issues/24163)
   check_includes = false

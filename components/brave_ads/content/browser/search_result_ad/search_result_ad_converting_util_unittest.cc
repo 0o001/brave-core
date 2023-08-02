@@ -8,7 +8,7 @@
 #include "base/strings/string_piece.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/search_result_ad_converting_util.h"
 #include "brave/components/brave_ads/content/browser/search_result_ad/test_web_page_util.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom.h"
 #include "components/schema_org/common/metadata.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"

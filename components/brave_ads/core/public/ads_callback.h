@@ -10,9 +10,9 @@
 
 #include "base/functional/callback.h"
 #include "base/values.h"
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/public/ads/inline_content_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom-forward.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

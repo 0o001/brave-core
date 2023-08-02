@@ -9,7 +9,7 @@
 #include <ostream>
 #include <string>
 
-#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-forward.h"
+#include "brave/components/brave_ads/core/public/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
 

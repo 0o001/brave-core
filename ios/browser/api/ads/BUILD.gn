@@ -48,9 +48,8 @@ source_set("ads") {
 }
 
 ios_objc_mojom_wrappers("brave_ads_mojom_wrappers") {
-  mojom_target = "//brave/components/brave_ads/core/common/interfaces"
-  sources =
-      [ "//brave/components/brave_ads/core/common/interfaces/brave_ads.mojom" ]
+  mojom_target = "//brave/components/brave_ads/core/public/mojom"
+  sources = [ "//brave/components/brave_ads/core/public/mojom/brave_ads.mojom" ]
   exclude_types = [
     "DBCommandInfo",
     "DBCommandBindingInfo",
