@@ -969,6 +969,8 @@ provideStrings({
   braveWalletNftPinningErrorTooltipReasonThree: 'Not enough space on local node',
   braveWalletImportNftModalTitle: 'Import NFT',
   braveWalletEditNftModalTitle: 'Edit NFT',
+  braveWalletNftMoveToSpam: 'Move to spam',
+  braveWalletNftUnspam: 'Unspam',
 
   // NFT auto discovery modal
   braveWalletEnableNftAutoDiscoveryModalHeader: 'Want your NFTs displayed automatically?',

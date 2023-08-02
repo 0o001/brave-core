@@ -41,25 +41,29 @@ export const NftMorePopup = (props: Props) => {
         <ButtonIcon name='edit-pencil' />
         <PopupButtonText>{getLocale('braveNftsTabEdit')}</PopupButtonText>
       </PopupButton>
-      {isTokenHidden
-        ? (
-          <PopupButton onClick={onUnHideNft}>
-            <ButtonIcon name='eye-on' />
-            <PopupButtonText>{getLocale('braveNftsTabUnhide')}</PopupButtonText>
+      {isTokenHidden ? (
+        <PopupButton onClick={onUnHideNft}>
+          <ButtonIcon name='eye-on' />
+          <PopupButtonText>{getLocale('braveNftsTabUnhide')}</PopupButtonText>
+        </PopupButton>
+      ) : (
+        <>
+          <PopupButton onClick={onHideNft}>
+            <ButtonIcon name='eye-off' />
+            <PopupButtonText>{getLocale('braveNftsTabHide')}</PopupButtonText>
           </PopupButton>
-        ) : (
-          <>
-            <PopupButton onClick={onHideNft}>
-              <ButtonIcon name='eye-off' />
-              <PopupButtonText>{getLocale('braveNftsTabHide')}</PopupButtonText>
-            </PopupButton>
-            <PopupButton onClick={isTokenSpam ? onUnSpam : onMoveToSpam}>
-              <ButtonIcon name='disable-outline' />
-              <PopupButtonText>{isTokenSpam ? 'Unspam' : 'Move to Spam'}</PopupButtonText>
-            </PopupButton>
-          </>
-        )
-      }
+          <PopupButton onClick={isTokenSpam ? onUnSpam : onMoveToSpam}>
+            <ButtonIcon name='disable-outline' />
+            <PopupButtonText>
+              {getLocale(
+                isTokenSpam
+                  ? 'braveWalletNftUnspam'
+                  : 'braveWalletNftMoveToSpam'
+              )}
+            </PopupButtonText>
+          </PopupButton>
+        </>
+      )}
     </StyledWrapper>
   )
 }
