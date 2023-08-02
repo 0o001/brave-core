@@ -11,8 +11,8 @@
 
 #include "base/functional/bind.h"
 #include "base/test/mock_callback.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/common/search_result_ad_feature.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/common/search_result_ad_feature.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_info.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_event_builder.h"

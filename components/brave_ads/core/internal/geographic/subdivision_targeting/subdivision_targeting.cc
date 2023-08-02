@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/geographic/subdivision_targeting/subdivision_targeting.h"
 
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/common/locale/locale_util.h"

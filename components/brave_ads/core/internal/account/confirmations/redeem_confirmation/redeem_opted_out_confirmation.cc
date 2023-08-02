@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/redeem_confirmation/url_request_builders/create_opted_out_confirmation_url_request_builder.h"

@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_builder.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 
 namespace brave_ads {

@@ -8,7 +8,7 @@
 #include <string>
 
 #include "base/uuid.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
 namespace brave_ads {

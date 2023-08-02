@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events_database_table.h"

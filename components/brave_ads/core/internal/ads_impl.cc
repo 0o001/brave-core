@@ -9,10 +9,7 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/ad_content_info.h"
-#include "brave/components/brave_ads/core/ad_content_value_util.h"
-#include "brave/components/brave_ads/core/category_content_value_util.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/ad_events.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
@@ -26,7 +23,10 @@
 #include "brave/components/brave_ads/core/internal/legacy_migration/client/legacy_client_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/confirmations/legacy_confirmation_migration.h"
 #include "brave/components/brave_ads/core/internal/legacy_migration/rewards/legacy_rewards_migration.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_content_info.h"
+#include "brave/components/brave_ads/core/public/ad_content_value_util.h"
+#include "brave/components/brave_ads/core/public/category_content_value_util.h"
+#include "brave/components/brave_ads/core/public/notification_ad_info.h"
 
 namespace brave_ads {
 

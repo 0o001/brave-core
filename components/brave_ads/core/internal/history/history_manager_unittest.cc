@@ -5,9 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_unittest_util.h"
@@ -22,9 +20,11 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_item_util.h"
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/notification_ad_info.h"
-#include "brave/components/brave_ads/core/promoted_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/history_item_info.h"
+#include "brave/components/brave_ads/core/public/inline_content_ad_info.h"
+#include "brave/components/brave_ads/core/public/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/promoted_content_ad_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 

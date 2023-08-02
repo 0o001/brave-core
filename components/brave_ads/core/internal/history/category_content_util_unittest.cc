@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/history/category_content_util.h"
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 

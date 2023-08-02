@@ -1230,8 +1230,7 @@ source_set("internal") {
 
   deps = [
     "//base",
-    "//brave/components/brave_ads/common",
-    "//brave/components/brave_ads/core:headers",
+    "//brave/components/brave_ads/core/common",
     "//brave/components/brave_news/common",
     "//brave/components/brave_rewards/common",
     "//brave/components/brave_rewards/core",
@@ -1255,8 +1254,8 @@ source_set("internal") {
   ]
 
   public_deps = [
-    "//brave/components/brave_ads/common/interfaces",
-    "//brave/components/brave_ads/core:headers",
+    "//brave/components/brave_ads/core:public",
+    "//brave/components/brave_ads/core/common/interfaces",
     "//brave/components/brave_federated/public/interfaces",
   ]
 }

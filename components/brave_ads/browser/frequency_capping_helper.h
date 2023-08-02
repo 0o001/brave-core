@@ -9,7 +9,7 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/ad_event_history.h"
+#include "brave/components/brave_ads/core/public/ad_event_history.h"
 
 namespace base {
 template <typename T>

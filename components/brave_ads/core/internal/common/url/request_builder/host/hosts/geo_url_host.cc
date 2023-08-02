@@ -8,7 +8,7 @@
 #include <ostream>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 
 namespace brave_ads {

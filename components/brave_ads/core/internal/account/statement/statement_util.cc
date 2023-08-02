@@ -9,7 +9,7 @@
 
 #include "base/ranges/algorithm.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/account_feature.h"
 #include "brave/components/brave_ads/core/internal/account/statement/ads_received_util.h"
 #include "brave/components/brave_ads/core/internal/account/statement/earnings_util.h"

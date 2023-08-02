@@ -9,9 +9,9 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/resources/resource_parsing_error_or.h"
+#include "brave/components/brave_ads/core/public/ads_client_notifier_observer.h"
 #include "third_party/abseil-cpp/absl/types/optional.h"
 
 namespace brave_ads {

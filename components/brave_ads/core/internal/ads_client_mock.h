@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
-#include "brave/components/brave_ads/core/ads_client.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/public/ads_client.h"
 #include "brave/components/brave_federated/public/interfaces/brave_federated.mojom.h"  // IWYU pragma: keep
 #include "testing/gmock/include/gmock/gmock.h"
 

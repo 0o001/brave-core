@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_builder.h"
 
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/ads/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"

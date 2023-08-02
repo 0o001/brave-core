@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ADS_CLIENT_HELPER_H_
 
-#include "brave/components/brave_ads/core/ads_client.h"
+#include "brave/components/brave_ads/core/public/ads_client.h"
 
 namespace brave_ads {
 

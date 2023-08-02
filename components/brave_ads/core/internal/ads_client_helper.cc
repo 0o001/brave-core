@@ -6,8 +6,8 @@
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 
 #include "base/check.h"
-#include "brave/components/brave_ads/core/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/ads_client_notifier_observer.h"
 
 namespace brave_ads {
 

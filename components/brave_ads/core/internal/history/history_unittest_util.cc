@@ -5,11 +5,11 @@
 
 #include "brave/components/brave_ads/core/internal/history/history_unittest_util.h"
 
-#include "brave/components/brave_ads/core/history_filter_types.h"
-#include "brave/components/brave_ads/core/history_item_info.h"
-#include "brave/components/brave_ads/core/history_sort_types.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
+#include "brave/components/brave_ads/core/public/history_filter_types.h"
+#include "brave/components/brave_ads/core/public/history_item_info.h"
+#include "brave/components/brave_ads/core/public/history_sort_types.h"
 
 namespace brave_ads {
 

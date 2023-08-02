@@ -8,10 +8,8 @@
 #include <utility>
 
 #include "base/check.h"
-#include "brave/components/brave_ads/common/brave_ads_feature.h"
-#include "brave/components/brave_ads/common/interfaces/brave_ads.mojom-shared.h"
-#include "brave/components/brave_ads/core/ads_callback.h"
-#include "brave/components/brave_ads/core/confirmation_type.h"
+#include "brave/components/brave_ads/core/common/brave_ads_feature.h"
+#include "brave/components/brave_ads/core/common/interfaces/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/account/account_util.h"
 #include "brave/components/brave_ads/core/internal/ads/ad_events/new_tab_page_ads/new_tab_page_ad_event_handler.h"
@@ -21,7 +19,9 @@
 #include "brave/components/brave_ads/core/internal/history/history_manager.h"
 #include "brave/components/brave_ads/core/internal/resources/behavioral/anti_targeting/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/transfer/transfer.h"
-#include "brave/components/brave_ads/core/new_tab_page_ad_info.h"
+#include "brave/components/brave_ads/core/public/ads_callback.h"
+#include "brave/components/brave_ads/core/public/confirmation_type.h"
+#include "brave/components/brave_ads/core/public/new_tab_page_ad_info.h"
 
 namespace brave_ads {
 

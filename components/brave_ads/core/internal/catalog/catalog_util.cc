@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/common/pref_names.h"
+#include "brave/components/brave_ads/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_util.h"
 #include "brave/components/brave_ads/core/internal/ads_client_helper.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
