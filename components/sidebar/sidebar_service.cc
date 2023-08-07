@@ -35,6 +35,8 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
+#include "base/no_destructor.h"
+#include "base/containers/flat_map.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/common/features.h"
@@ -72,6 +74,25 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   return SidebarItem::BuiltInItemType::kNone;
 }
 
+int GetBuiltInItemTypeOrderPos(
+    const SidebarItem::BuiltInItemType& builtin_type) {
+  using DataTypeMap = base::flat_map<SidebarItem::BuiltInItemType, int>;
+  static const base::NoDestructor<DataTypeMap> preference_to_datatype([]() {
+    DataTypeMap index_to_value_map;
+    std::transform(
+        std::begin(SidebarService::kDefaultBuiltInItemTypes),
+        std::end(SidebarService::kDefaultBuiltInItemTypes),
+        std::inserter(index_to_value_map, index_to_value_map.end()),
+        [&index_to_value_map](const SidebarItem::BuiltInItemType& value) {
+          return std::make_pair(value, index_to_value_map.size());
+        });
+    return index_to_value_map;
+  }());
+  return preference_to_datatype->contains(builtin_type)
+             ? preference_to_datatype->at(builtin_type)
+             : std::numeric_limits<int>::max();
+}
+
 }  // namespace
 
 bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
@@ -93,7 +114,14 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
 }
 
-SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
+SidebarService::SidebarService(PrefService* prefs) 
+: SidebarService(prefs, std::make_unique<BuiltInTypeIndexProvider>()) {}
+
+SidebarService::SidebarService(
+    PrefService* prefs,
+    std::unique_ptr<BuiltInTypeIndexProvider> index_provider)
+    : prefs_(prefs),
+    builtin_type_index_provider_(std::move(index_provider)) {
   DCHECK(prefs_);
   MigratePrefSidebarBuiltInItemsToHidden();
 
@@ -450,11 +478,12 @@ void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
 }
 
 void SidebarService::LoadSidebarItems() {
-  auto default_items_to_add = GetDefaultSidebarItems();
+  auto default_items_to_add = GetDefaultSidebarItems();  
 
   // Pref for custom items and custom order
   auto* preference = prefs_->FindPreference(kSidebarItems);
   if (!preference->IsDefaultValue()) {
+    std::vector<SidebarItem> bltin_items, web_type_items;
     const auto& items = preference->GetValue()->GetList();
     for (const auto& entry : items) {
       const auto& item = entry.GetDict();
@@ -484,7 +513,7 @@ void SidebarService::LoadSidebarItems() {
           continue;
         }
         // Valid built-in item, add it
-        items_.emplace_back(*std::make_move_iterator(iter));
+        bltin_items.emplace_back(*std::make_move_iterator(iter));
         default_items_to_add.erase(iter);
         continue;
       }
@@ -501,10 +530,21 @@ void SidebarService::LoadSidebarItems() {
       if (const auto* value = item.FindString(kSidebarItemTitleKey)) {
         title = *value;
       }
-      items_.push_back(SidebarItem::Create(
+      web_type_items.push_back(SidebarItem::Create(
           GURL(url), base::UTF8ToUTF16(title), type,
           SidebarItem::BuiltInItemType::kNone, open_in_panel));
     }
+    base::ranges::sort(bltin_items, [&](const SidebarItem& lhi,
+                                       const SidebarItem& rhi) {
+      return builtin_type_index_provider_->GetBuiltInItemTypeOrderIndex(
+                 lhi.built_in_item_type) <
+             builtin_type_index_provider_->GetBuiltInItemTypeOrderIndex(
+                 rhi.built_in_item_type);
+    });
+    std::move(bltin_items.begin(), bltin_items.end(),
+              std::back_inserter(items_));
+    std::move(web_type_items.begin(), web_type_items.end(),
+              std::back_inserter(items_));
   }
 
   //
@@ -657,6 +697,11 @@ void SidebarService::OnPreferenceChanged(const std::string& pref_name) {
       obs.OnShowSidebarOptionChanged(GetSidebarShowOption());
     return;
   }
+}
+
+int SidebarService::BuiltInTypeIndexProvider::GetBuiltInItemTypeOrderIndex(
+    const SidebarItem::BuiltInItemType& builtin_type) {
+  return GetBuiltInItemTypeOrderPos(builtin_type);
 }
 
 }  // namespace sidebar
