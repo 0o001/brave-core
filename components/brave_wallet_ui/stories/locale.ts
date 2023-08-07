@@ -970,7 +970,7 @@ provideStrings({
   braveWalletImportNftModalTitle: 'Import NFT',
   braveWalletEditNftModalTitle: 'Edit NFT',
   braveWalletNftMoveToSpam: 'Move to spam',
-  braveWalletNftUnspam: 'Unspam',
+  braveWalletNftUnspam: 'Not spam',
 
   // NFT auto discovery modal
   braveWalletEnableNftAutoDiscoveryModalHeader: 'Want your NFTs displayed automatically?',
