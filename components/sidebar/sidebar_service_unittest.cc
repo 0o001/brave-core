@@ -41,7 +41,7 @@ using ::testing::Optional;
 using version_info::Channel;
 
 namespace {
-constexpr char sidebar_json[] = R"({
+constexpr char sidebar_all_builtin_visible_json[] = R"({
         "hidden_built_in_items": [  ],
         "item_added_feedback_bubble_shown_count": 3,
         "side_panel_width": 320,
@@ -82,6 +82,82 @@ constexpr char sidebar_json[] = R"({
         } ],
         "sidebar_show_option": 0
     })";
+constexpr char sidebar_builtin_wallet_hidden_json[] = R"({
+         "hidden_built_in_items": [ 2 ],
+         "item_added_feedback_bubble_shown_count": 3,
+         "side_panel_width": 320,
+         "sidebar_alignment_changed_for_vertical_tabs": false,
+         "sidebar_items": [ {
+            "built_in_item_type": 1,
+            "type": 0
+         }, {
+            "built_in_item_type": 3,
+            "type": 0
+         }, {
+            "built_in_item_type": 4,
+            "type": 0
+         }, {
+            "built_in_item_type": 7,
+            "type": 0
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "chrome.org",
+            "type": 1,
+            "url": "https://chrome.org/"
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "Artificial intelligence - Wikipedia",
+            "type": 1,
+            "url": "https://en.wikipedia.org/wiki/Artificial_intelligence"
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "Google Chrome",
+            "type": 1,
+            "url": "https://www.google.com/chrome/"
+         } ],
+         "sidebar_show_option": 0
+      })";
+constexpr char sidebar_builtin_ai_chat_not_listed_json[] = R"({
+         "hidden_built_in_items": [ ],
+         "item_added_feedback_bubble_shown_count": 3,
+         "side_panel_width": 320,
+         "sidebar_alignment_changed_for_vertical_tabs": false,
+         "sidebar_items": [ {
+            "built_in_item_type": 1,
+            "type": 0
+         }, {
+            "built_in_item_type": 3,
+            "type": 0
+         }, {
+            "built_in_item_type": 4,
+            "type": 0
+         }, {
+            "built_in_item_type": 2,
+            "type": 0
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "chrome.org",
+            "type": 1,
+            "url": "https://chrome.org/"
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "Artificial intelligence - Wikipedia",
+            "type": 1,
+            "url": "https://en.wikipedia.org/wiki/Artificial_intelligence"
+         }, {
+            "built_in_item_type": 0,
+            "open_in_panel": false,
+            "title": "Google Chrome",
+            "type": 1,
+            "url": "https://www.google.com/chrome/"
+         } ],
+         "sidebar_show_option": 0
+      })";
 
   base::Value::Dict ParseTestJson(const base::StringPiece& json) {
     absl::optional<base::Value> potential_response_dict_val =
@@ -118,16 +194,6 @@ class MockSidebarServiceObserver : public SidebarService::Observer {
               OnItemMoved,
               (const SidebarItem& item, size_t from, size_t to),
               (override));
-};
-
-class MockBuiltInTypeIndexProvider
-    : public SidebarService::BuiltInTypeIndexProvider {
-public:
-  MOCK_METHOD(int,
-              GetBuiltInItemTypeOrderIndex,
-              (const SidebarItem::BuiltInItemType& builtin_type),
-              (override));
-
 };
 
 class SidebarServiceTest : public testing::Test {
@@ -846,23 +912,6 @@ class SidebarServiceOrderingTest : public testing::Test {
     sidebar_service_->AddObserver(&observer_);
   }
 
-  void SetSidebarServiceTestingFactory(
-      std::unique_ptr<SidebarService::BuiltInTypeIndexProvider>
-          index_provider) {
-    sidebar::SidebarServiceFactory::GetInstance()->SetTestingFactory(
-        profile_.get(),
-        base::BindRepeating(
-            &SidebarServiceOrderingTest::BuildSideBarServiceWapper,
-            base::Unretained(this), base::Passed(&index_provider)));
-  }
-
-  std::unique_ptr<KeyedService> BuildSideBarServiceWapper(
-      std::unique_ptr<SidebarService::BuiltInTypeIndexProvider> index_provider,
-      content::BrowserContext* context) {
-    return std::unique_ptr<SidebarService>(new SidebarService(GetPrefs(),
-                                            std::move(index_provider)));
-  }
-
   bool ValidateBuiltInTypesOrdering(const std::vector<SidebarItem::BuiltInItemType>& defined_order) {
     size_t srv_items_index = 0, dbt_index = 0;
     const auto default_btin_types_count =
@@ -883,6 +932,23 @@ class SidebarServiceOrderingTest : public testing::Test {
       dbt_index++;
     }    
     return srv_items_index == srv_items_count;
+  }
+
+  void LoadFromPrefsTest(base::Value::Dict sidebar_prefs, 
+      const std::vector<SidebarItem::BuiltInItemType>& defined_order,
+      const size_t& expected_items_loaded) {
+   //base::Value::Dict sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
+   GetPrefs()->Set(kSidebarItems,
+                   std::move(sidebar_prefs.Find("sidebar_items")->Clone()));
+   GetPrefs()->SetInteger(kSidebarShowOption, 0);
+   EXPECT_EQ(0, GetPrefs()->GetInteger(kSidebarShowOption));
+
+   InitSideBarService();
+
+  EXPECT_EQ(expected_items_loaded,
+    GetSidebarService()->items().size());
+  EXPECT_TRUE(ValidateBuiltInTypesOrdering(defined_order))
+     << "Wrong order detected";
   }
 
 private:
@@ -918,57 +984,52 @@ TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
       SidebarItem::BuiltInItemType::kChatUI}));
 }
 
-TEST_F(SidebarServiceOrderingTest, LoadFromPrefsCustomIndexProvider) {
-  base::Value::Dict sidebar(ParseTestJson(sidebar_json));
-  GetPrefs()->Set(kSidebarItems,
-                  std::move(sidebar.Find("sidebar_items")->Clone()));
-  GetPrefs()->SetInteger(kSidebarShowOption, 0);
-  EXPECT_EQ(0, GetPrefs()->GetInteger(kSidebarShowOption));
-
-  auto index_provider = std::make_unique<MockBuiltInTypeIndexProvider>();
-  EXPECT_CALL(*index_provider, GetBuiltInItemTypeOrderIndex(
-                                   SidebarItem::BuiltInItemType::kBraveTalk))
-      .WillRepeatedly(::testing::Return(0));
-  EXPECT_CALL(*index_provider, GetBuiltInItemTypeOrderIndex(
-                                   SidebarItem::BuiltInItemType::kBookmarks))
-      .WillRepeatedly(::testing::Return(1));
-  EXPECT_CALL(*index_provider, GetBuiltInItemTypeOrderIndex(
-                                   SidebarItem::BuiltInItemType::kReadingList))
-      .WillRepeatedly(::testing::Return(2));
-  EXPECT_CALL(*index_provider, GetBuiltInItemTypeOrderIndex(
-                                   SidebarItem::BuiltInItemType::kHistory))
-      .WillRepeatedly(::testing::Return(3));
-  EXPECT_CALL(*index_provider, GetBuiltInItemTypeOrderIndex(
-                                   SidebarItem::BuiltInItemType::kWallet))
-      .WillRepeatedly(::testing::Return(4));
-  EXPECT_CALL(*index_provider, GetBuiltInItemTypeOrderIndex(
-                                   SidebarItem::BuiltInItemType::kPlaylist))
-      .WillRepeatedly(::testing::Return(5));
-  EXPECT_CALL(*index_provider, GetBuiltInItemTypeOrderIndex(
-                                   SidebarItem::BuiltInItemType::kChatUI))
-      .WillRepeatedly(::testing::Return(6));
-
-  raw_ptr<MockBuiltInTypeIndexProvider> index_provider_raw =
-      index_provider.get();
-  SetSidebarServiceTestingFactory(std::move(index_provider));
-  InitSideBarService();
-
-EXPECT_EQ(
+TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
+   base::Value::Dict sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
+   LoadFromPrefsTest(std::move(sidebar), {
+      SidebarItem::BuiltInItemType::kChatUI,
+      SidebarItem::BuiltInItemType::kWallet,
+      SidebarItem::BuiltInItemType::kReadingList,
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kBraveTalk,      
+      },
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    8UL,
+    8UL
 #else
-    7UL,
+    7UL
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-    GetSidebarService()->items().size());
-  EXPECT_TRUE(ValidateBuiltInTypesOrdering({
+      );
+}
+TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
+   base::Value::Dict sidebar(ParseTestJson(sidebar_builtin_wallet_hidden_json));
+   LoadFromPrefsTest(std::move(sidebar), {
       SidebarItem::BuiltInItemType::kBraveTalk,
       SidebarItem::BuiltInItemType::kBookmarks,
       SidebarItem::BuiltInItemType::kReadingList,
-      SidebarItem::BuiltInItemType::kHistory,
+      SidebarItem::BuiltInItemType::kChatUI,
+      },
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    7UL
+#else
+    6UL
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+      );
+}
+TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
+   base::Value::Dict sidebar(ParseTestJson(sidebar_builtin_ai_chat_not_listed_json));
+   LoadFromPrefsTest(std::move(sidebar), {
+      SidebarItem::BuiltInItemType::kBraveTalk,
+      SidebarItem::BuiltInItemType::kBookmarks,
+      SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kWallet,
-      SidebarItem::BuiltInItemType::kPlaylist,
-      SidebarItem::BuiltInItemType::kChatUI
-      })) << "Wrong order detected";
+      SidebarItem::BuiltInItemType::kChatUI,
+      },
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    8UL
+#else
+    7UL
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+      );
 }
 
 }  // namespace sidebar

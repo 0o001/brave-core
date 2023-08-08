@@ -73,21 +73,6 @@ class SidebarService : public KeyedService {
     ~Observer() override = default;
   };
 
-  class BuiltInTypeIndexProvider {
-   public:
-    BuiltInTypeIndexProvider() = default;
-    BuiltInTypeIndexProvider(const BuiltInTypeIndexProvider&) = delete;
-    BuiltInTypeIndexProvider& operator=(const BuiltInTypeIndexProvider&) =
-        delete;
-    BuiltInTypeIndexProvider(const BuiltInTypeIndexProvider&&) = delete;
-    BuiltInTypeIndexProvider& operator=(const BuiltInTypeIndexProvider&&) =
-        delete;
-    virtual ~BuiltInTypeIndexProvider() = default;
-
-    virtual int GetBuiltInItemTypeOrderIndex(
-        const SidebarItem::BuiltInItemType& builtin_type);
-  };
-
   static void RegisterProfilePrefs(PrefRegistrySimple* registry,
                                    version_info::Channel channel);
 
@@ -121,16 +106,12 @@ class SidebarService : public KeyedService {
   SidebarService& operator=(const SidebarService&) = delete;
 
  private:
-   explicit SidebarService(
-      PrefService* prefs,
-      std::unique_ptr<BuiltInTypeIndexProvider> index_provider);
-
   friend class SidebarServiceOrderingTest;
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, AddRemoveItems);
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceOrderingTest,
                            BuiltInItemsDefaultOrder);
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceOrderingTest,
-                           LoadFromPrefsCustomIndexProvider);
+                           LoadFromPrefsAllBuiltInVisible);
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();
@@ -148,8 +129,6 @@ class SidebarService : public KeyedService {
 
   base::ObserverList<Observer> observers_;
   PrefChangeRegistrar pref_change_registrar_;
-  std::unique_ptr<BuiltInTypeIndexProvider>
-      builtin_type_index_provider_;
 };
 
 }  // namespace sidebar

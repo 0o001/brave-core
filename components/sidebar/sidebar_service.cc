@@ -74,23 +74,11 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
   return SidebarItem::BuiltInItemType::kNone;
 }
 
-int GetBuiltInItemTypeOrderPos(
-    const SidebarItem::BuiltInItemType& builtin_type) {
-  using DataTypeMap = base::flat_map<SidebarItem::BuiltInItemType, int>;
-  static const base::NoDestructor<DataTypeMap> preference_to_datatype([]() {
-    DataTypeMap index_to_value_map;
-    std::transform(
-        std::begin(SidebarService::kDefaultBuiltInItemTypes),
-        std::end(SidebarService::kDefaultBuiltInItemTypes),
-        std::inserter(index_to_value_map, index_to_value_map.end()),
-        [&index_to_value_map](const SidebarItem::BuiltInItemType& value) {
-          return std::make_pair(value, index_to_value_map.size());
-        });
-    return index_to_value_map;
-  }());
-  return preference_to_datatype->contains(builtin_type)
-             ? preference_to_datatype->at(builtin_type)
-             : std::numeric_limits<int>::max();
+size_t GetLastBuiltInItemIndex(const std::vector<SidebarItem>& items) {
+  const auto it = std::find_if(items.rbegin(), items.rend(), [](const SidebarItem& item){
+    return IsBuiltInType(item);
+  });
+  return items.rend() - it;
 }
 
 }  // namespace
@@ -114,14 +102,7 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
 }
 
-SidebarService::SidebarService(PrefService* prefs) 
-: SidebarService(prefs, std::make_unique<BuiltInTypeIndexProvider>()) {}
-
-SidebarService::SidebarService(
-    PrefService* prefs,
-    std::unique_ptr<BuiltInTypeIndexProvider> index_provider)
-    : prefs_(prefs),
-    builtin_type_index_provider_(std::move(index_provider)) {
+SidebarService::SidebarService(PrefService* prefs) : prefs_(prefs) {
   DCHECK(prefs_);
   MigratePrefSidebarBuiltInItemsToHidden();
 
@@ -294,11 +275,27 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
 
 void SidebarService::AddItem(const SidebarItem& item) {
   DCHECK(IsValidItem(item));
-  items_.push_back(item);
+  if(item.built_in_item_type == SidebarItem::BuiltInItemType::kNone) {
+    items_.push_back(item);
+    for (Observer& obs : observers_) {
+      // Index starts at zero.
+      obs.OnItemAdded(item, items_.size() - 1);
+    }
+  } else {
+    const auto size_before_insert = items_.size();
+    const size_t pos_to_insert_behind = GetLastBuiltInItemIndex(items());
 
-  for (Observer& obs : observers_) {
-    // Index starts at zero.
-    obs.OnItemAdded(item, items_.size() - 1);
+    items_.insert(items_.begin() + pos_to_insert_behind, item);
+    for (Observer& obs : observers_) {
+      // Index starts at zero.
+      obs.OnItemAdded(item, items_.size() - 1);
+    }
+
+    for(size_t index = size_before_insert - 1; index >= pos_to_insert_behind; index--) {
+      for (Observer& obs : observers_) {
+        obs.OnItemMoved(item, index, index + 1);
+      }
+    }
   }
 
   UpdateSidebarItemsToPrefStore();
@@ -478,12 +475,11 @@ void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
 }
 
 void SidebarService::LoadSidebarItems() {
-  auto default_items_to_add = GetDefaultSidebarItems();  
+  auto default_items_to_add = GetDefaultSidebarItems();
 
   // Pref for custom items and custom order
   auto* preference = prefs_->FindPreference(kSidebarItems);
   if (!preference->IsDefaultValue()) {
-    std::vector<SidebarItem> bltin_items, web_type_items;
     const auto& items = preference->GetValue()->GetList();
     for (const auto& entry : items) {
       const auto& item = entry.GetDict();
@@ -513,7 +509,7 @@ void SidebarService::LoadSidebarItems() {
           continue;
         }
         // Valid built-in item, add it
-        bltin_items.emplace_back(*std::make_move_iterator(iter));
+        items_.emplace_back(*std::make_move_iterator(iter));
         default_items_to_add.erase(iter);
         continue;
       }
@@ -530,21 +526,10 @@ void SidebarService::LoadSidebarItems() {
       if (const auto* value = item.FindString(kSidebarItemTitleKey)) {
         title = *value;
       }
-      web_type_items.push_back(SidebarItem::Create(
+      items_.push_back(SidebarItem::Create(
           GURL(url), base::UTF8ToUTF16(title), type,
           SidebarItem::BuiltInItemType::kNone, open_in_panel));
     }
-    base::ranges::sort(bltin_items, [&](const SidebarItem& lhi,
-                                       const SidebarItem& rhi) {
-      return builtin_type_index_provider_->GetBuiltInItemTypeOrderIndex(
-                 lhi.built_in_item_type) <
-             builtin_type_index_provider_->GetBuiltInItemTypeOrderIndex(
-                 rhi.built_in_item_type);
-    });
-    std::move(bltin_items.begin(), bltin_items.end(),
-              std::back_inserter(items_));
-    std::move(web_type_items.begin(), web_type_items.end(),
-              std::back_inserter(items_));
   }
 
   //
@@ -697,11 +682,6 @@ void SidebarService::OnPreferenceChanged(const std::string& pref_name) {
       obs.OnShowSidebarOptionChanged(GetSidebarShowOption());
     return;
   }
-}
-
-int SidebarService::BuiltInTypeIndexProvider::GetBuiltInItemTypeOrderIndex(
-    const SidebarItem::BuiltInItemType& builtin_type) {
-  return GetBuiltInItemTypeOrderPos(builtin_type);
 }
 
 }  // namespace sidebar
