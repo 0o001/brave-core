@@ -6,4 +6,5 @@
 #include "brave/browser/ui/browser_element_identifiers.h"
 
 // Please keep this list alphabetized.
+DEFINE_ELEMENT_IDENTIFIER_VALUE(kBraveVPNButtonElementId);
 DEFINE_ELEMENT_IDENTIFIER_VALUE(kVerticalTabsSettingElementId);

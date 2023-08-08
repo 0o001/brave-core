@@ -31,6 +31,16 @@ class BraveEducationOpenVerticalTabsSettingsFunction
   ResponseAction Run() override;
 };
 
+class BraveEducationStartVpnTutorialFunction : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveEducation.startVpnTutorial", UNKNOWN)
+
+ protected:
+  ~BraveEducationStartVpnTutorialFunction() override {}
+
+  ResponseAction Run() override;
+};
+
 }  // namespace extensions::api
 
 #endif  // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_EDUCATION_API_H_

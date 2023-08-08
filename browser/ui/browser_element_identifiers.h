@@ -10,6 +10,7 @@
 #include "ui/base/interaction/element_tracker.h"
 
 // Please keep this list alphabetized.
+DECLARE_ELEMENT_IDENTIFIER_VALUE(kBraveVPNButtonElementId);
 DECLARE_ELEMENT_IDENTIFIER_VALUE(kVerticalTabsSettingElementId);
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_ELEMENT_IDENTIFIERS_H_

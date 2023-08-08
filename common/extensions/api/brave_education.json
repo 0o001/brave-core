@@ -23,6 +23,12 @@
         "type": "function",
         "description": "Opens the Brave settings page and highlights the vertical tabs setting with IPH",
         "parameters": []
+      },
+      {
+        "name": "startVpnTutorial",
+        "type": "function",
+        "description": "Starts the Brave VPN tutorial",
+        "parameters": []
       }
     ]
   }

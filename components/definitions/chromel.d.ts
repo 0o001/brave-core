@@ -224,6 +224,7 @@ declare namespace chrome.greaselion {
 declare namespace chrome.braveEducation {
   function openSettings (url: string): void
   function openVerticalTabsSettings (): void
+  function startVpnTutorial (): void
 }
 
 declare namespace chrome.braveNews {

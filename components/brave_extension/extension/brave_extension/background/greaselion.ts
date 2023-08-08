@@ -490,6 +490,10 @@ chrome.runtime.onMessageExternal.addListener(
               }
               break
             }
+            case 'StartVpnTutorial': {
+              chrome.braveEducation.startVpnTutorial()
+              break
+            }
           }
           break
         }
