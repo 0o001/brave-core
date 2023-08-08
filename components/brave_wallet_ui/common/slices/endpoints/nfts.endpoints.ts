@@ -43,7 +43,9 @@ export const nftsEndpoints = ({
       queryFn: async (tokenArg, _api, _extraOptions, baseQuery) => {
         try {
           if (!tokenArg.isErc721) {
-            throw new Error('Cannot fetch erc-721 metadata for non erc-721 token')
+            throw new Error(
+              'Cannot fetch erc-721 metadata for non erc-721 token'
+            )
           }
 
           const { jsonRpcService } = baseQuery(undefined).data
@@ -129,7 +131,7 @@ export const nftsEndpoints = ({
                 )
               : undefined
 
-          if(result?.error) throw new Error(result.errorMessage)
+          if (result?.error) throw new Error(result.errorMessage)
 
           const response = result?.response && JSON.parse(result.response)
           const attributes = Array.isArray(response.attributes)
@@ -245,59 +247,59 @@ export const nftsEndpoints = ({
       providesTags: ['AutoPinEnabled']
     }),
     getSimpleHashSpamNfts: query<BraveWallet.BlockchainToken[], void>({
-        queryFn: async (_arg, _api, _extraOptions, baseQuery) => {
-          try {
-            const { data: api } = baseQuery(undefined)
-            const { braveWalletService } = api
-            const { cache } = baseQuery(undefined)
+      queryFn: async (_arg, _api, _extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { braveWalletService } = api
+          const { cache } = baseQuery(undefined)
 
-            const chainIds = (await getAllNetworksList(api)).map(
-              (network) => network.chainId
+          const chainIds = (await getAllNetworksList(api)).map(
+            (network) => network.chainId
+          )
+
+          const accounts = (await cache.getAllAccounts()).accounts
+          const spamNfts = (
+            await mapLimit(
+              accounts,
+              10,
+              async (account: BraveWallet.AccountInfo) => {
+                let currentCursor: string | null = null
+                const accountSpamNfts = []
+
+                do {
+                  const {
+                    tokens,
+                    cursor
+                  }: {
+                    tokens: BraveWallet.BlockchainToken[]
+                    cursor: string | null
+                  } = await braveWalletService.getSimpleHashSpamNFTs(
+                    account.address,
+                    chainIds,
+                    account.accountId.coin,
+                    currentCursor
+                  )
+
+                  accountSpamNfts.push(...tokens)
+                  currentCursor = cursor
+                } while (currentCursor)
+
+                return accountSpamNfts
+              }
             )
+          ).flat(1)
 
-            const accounts = (await cache.getAllAccounts()).accounts
-            const spamNfts = (
-              await mapLimit(
-                accounts,
-                10,
-                async (account: BraveWallet.AccountInfo) => {
-                  let currentCursor: string | null = null
-                  const accountSpamNfts = []
-
-                  do {
-                    const {
-                      tokens,
-                      cursor
-                    }: {
-                      tokens: BraveWallet.BlockchainToken[]
-                      cursor: string | null
-                    } = await braveWalletService.getSimpleHashSpamNFTs(
-                      account.address,
-                      chainIds,
-                      account.accountId.coin,
-                      currentCursor
-                    )
-
-                    accountSpamNfts.push(...tokens)
-                    currentCursor = cursor
-                  } while (currentCursor)
-
-                  return accountSpamNfts
-                }
-              )
-            ).flat(1)
-
-            return {
-              data: spamNfts
-            }
-          } catch (error) {
-            console.error('Error fetching spam NFTs: ', error)
-            return {
-              error: 'Failed to fetch spam NFTs'
-            }
+          return {
+            data: spamNfts
           }
-        },
-        providesTags: ['SimpleHashSpamNFTs']
+        } catch (error) {
+          console.error('Error fetching spam NFTs: ', error)
+          return {
+            error: 'Failed to fetch spam NFTs'
+          }
+        }
+      },
+      providesTags: ['SimpleHashSpamNFTs']
     }),
     updateNftSpamStatus: mutation<
       boolean,
@@ -324,7 +326,13 @@ export const nftsEndpoints = ({
           }
         }
       },
-      invalidatesTags: ['SimpleHashSpamNFTs', 'UserBlockchainTokens']
+      invalidatesTags: (_res, err, arg) =>
+        err
+          ? ['SimpleHashSpamNFTs', 'UserBlockchainTokens']
+          : [
+              { type: 'SimpleHashSpamNFTs', id: getAssetIdKey(arg.token) },
+              { type: 'UserBlockchainTokens', id: getAssetIdKey(arg.token) }
+            ]
     })
   }
 }

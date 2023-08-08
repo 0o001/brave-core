@@ -189,9 +189,10 @@ export const Nfts = (props: Props) => {
   const [allSpamNfts, allSpamNftsIds] = React.useMemo(() => {
     // filter out NFTs user has marked not spam
     // and hidden NFTs
+    const allIds = userNonSpamNftIds.concat(hiddenNftsIds)
     const simpleHashList = simpleHashSpamNfts.filter(
       (nft) =>
-        ![...userNonSpamNftIds, ...hiddenNftsIds].includes(getAssetIdKey(nft))
+        !allIds.includes(getAssetIdKey(nft))
     )
     const simpleHashListIds = simpleHashList.map((nft) => getAssetIdKey(nft))
     // add NFTs user has marked as NFT if they are not in the list

@@ -2910,9 +2910,8 @@ export const {
   useUpdateUnapprovedTransactionNonceMutation,
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
-  useUpdateUserTokenMutation,
   useGetOnRampAssetsQuery,
-  useGetOffRampAssetsQuery
+  useGetOffRampAssetsQuery,
   useUpdateUserTokenMutation,
   useUpdateNftSpamStatusMutation
 } = walletApi
