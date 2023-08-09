@@ -282,10 +282,10 @@ void SidebarService::AddItem(const SidebarItem& item) {
       obs.OnItemAdded(item, items_.size() - 1);
     }
   } else {
-    const size_t pos_to_insert_behind(GetLastBuiltInItemIndex(items()));
-    items_.insert(items_.begin() + pos_to_insert_behind, item);
+    const size_t pos_to_insert = GetLastBuiltInItemIndex(items());
+    items_.insert(items_.begin() + pos_to_insert, item);
     for (Observer& obs : observers_) {
-      obs.OnItemAdded(item, pos_to_insert_behind);
+      obs.OnItemAdded(item, pos_to_insert);
     }
   }
 
@@ -549,25 +549,13 @@ void SidebarService::LoadSidebarItems() {
   }
 
   // Add the items the user has never seen (or never persisted).
-  // Get the initial order of items so that we can attempt to
-  // insert at the intended order.
+  // Insert just behind the last built-in item.
   for (const auto& item : default_items_to_add) {
-    const auto* default_item_iter = base::ranges::find(
-        SidebarService::kDefaultBuiltInItemTypes, item.built_in_item_type);
-    auto default_index = default_item_iter -
-                         std::begin(SidebarService::kDefaultBuiltInItemTypes);
-    // Add at the default index for the first time. For users which haven't
-    // changed any order, or removed items, this will be at the intentional
-    // index. For users who have re-ordered, this will be different but still
-    // acceptable. It will be a minority of cases where it gets inserted in to
-    // the middle of custom items, but that will still work.
-    auto index = std::min(static_cast<int>(default_index),
-                          static_cast<int>(items_.size()));
+    const size_t pos_to_insert = GetLastBuiltInItemIndex(items());
     VLOG(2) << "Inserting built-in item ("
             << static_cast<int>(item.built_in_item_type)
-            << " with default index: " << default_index
-            << " at actual index: " << index;
-    items_.insert(items_.begin() + index, std::move(item));
+            << " to the position: " << pos_to_insert;
+    items_.insert(items_.begin() + pos_to_insert, std::move(item));
   }
 }
 
