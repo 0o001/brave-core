@@ -275,26 +275,17 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
 
 void SidebarService::AddItem(const SidebarItem& item) {
   DCHECK(IsValidItem(item));
-  if(item.built_in_item_type == SidebarItem::BuiltInItemType::kNone) {
+  if(IsWebType(item)) {
     items_.push_back(item);
     for (Observer& obs : observers_) {
       // Index starts at zero.
       obs.OnItemAdded(item, items_.size() - 1);
     }
   } else {
-    const auto size_before_insert = items_.size();
-    const size_t pos_to_insert_behind = GetLastBuiltInItemIndex(items());
-
+    const size_t pos_to_insert_behind(GetLastBuiltInItemIndex(items()));
     items_.insert(items_.begin() + pos_to_insert_behind, item);
     for (Observer& obs : observers_) {
-      // Index starts at zero.
-      obs.OnItemAdded(item, items_.size() - 1);
-    }
-
-    for(size_t index = size_before_insert - 1; index >= pos_to_insert_behind; index--) {
-      for (Observer& obs : observers_) {
-        obs.OnItemMoved(item, index, index + 1);
-      }
+      obs.OnItemAdded(item, pos_to_insert_behind);
     }
   }
 
