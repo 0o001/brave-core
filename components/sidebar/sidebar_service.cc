@@ -13,8 +13,10 @@
 
 #include "base/check_is_test.h"
 #include "base/containers/contains.h"
+#include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
@@ -35,8 +37,6 @@
 #include "third_party/abseil-cpp/absl/types/optional.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/resource/resource_bundle.h"
-#include "base/no_destructor.h"
-#include "base/containers/flat_map.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/common/features.h"
@@ -75,9 +75,9 @@ SidebarItem::BuiltInItemType GetBuiltInItemTypeForLegacyURL(
 }
 
 size_t GetLastBuiltInItemIndex(const std::vector<SidebarItem>& items) {
-  const auto it = std::find_if(items.rbegin(), items.rend(), [](const SidebarItem& item){
-    return IsBuiltInType(item);
-  });
+  const auto it =
+      std::find_if(items.rbegin(), items.rend(),
+                   [](const SidebarItem& item) { return IsBuiltInType(item); });
   return items.rend() - it;
 }
 
@@ -275,7 +275,7 @@ void SidebarService::MigratePrefSidebarBuiltInItemsToHidden() {
 
 void SidebarService::AddItem(const SidebarItem& item) {
   DCHECK(IsValidItem(item));
-  if(IsWebType(item)) {
+  if (IsWebType(item)) {
     items_.push_back(item);
     for (Observer& obs : observers_) {
       // Index starts at zero.

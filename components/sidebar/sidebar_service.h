@@ -106,12 +106,15 @@ class SidebarService : public KeyedService {
   SidebarService& operator=(const SidebarService&) = delete;
 
  private:
-  friend class SidebarServiceOrderingTest;
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceTest, AddRemoveItems);
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceOrderingTest,
                            BuiltInItemsDefaultOrder);
   FRIEND_TEST_ALL_PREFIXES(SidebarServiceOrderingTest,
                            LoadFromPrefsAllBuiltInVisible);
+  FRIEND_TEST_ALL_PREFIXES(SidebarServiceOrderingTest,
+                           LoadFromPrefsWalletBuiltInHidden);
+  FRIEND_TEST_ALL_PREFIXES(SidebarServiceOrderingTest,
+                           LoadFromPrefsAiChatBuiltInNotListed);
 
   void LoadSidebarItems();
   void UpdateSidebarItemsToPrefStore();

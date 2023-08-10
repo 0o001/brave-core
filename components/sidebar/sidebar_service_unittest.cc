@@ -159,12 +159,12 @@ constexpr char sidebar_builtin_ai_chat_not_listed_json[] = R"({
          "sidebar_show_option": 0
       })";
 
-  base::Value::Dict ParseTestJson(const base::StringPiece& json) {
-    absl::optional<base::Value> potential_response_dict_val =
-        base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
-                                        base::JSONParserOptions::JSON_PARSE_RFC);
-    return std::move(potential_response_dict_val.value().GetDict());
-  }
+base::Value::Dict ParseTestJson(const base::StringPiece& json) {
+  absl::optional<base::Value> potential_response_dict_val =
+      base::JSONReader::Read(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS |
+                                       base::JSONParserOptions::JSON_PARSE_RFC);
+  return std::move(potential_response_dict_val.value().GetDict());
+}
 }  // namespace
 
 namespace sidebar {
@@ -434,10 +434,14 @@ TEST_F(SidebarServiceTest, HideBuiltInItem) {
 
 TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
   SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
+  const std::vector<SidebarItem::BuiltInItemType> hidden_builtin_types{
+      SidebarItem::BuiltInItemType::kBookmarks};
   // Have prefs which contain a custom item and hides 1 built-in item
   {
     base::Value::List list;
-    list.Append(static_cast<int>(SidebarItem::BuiltInItemType::kBookmarks));
+    base::ranges::for_each(hidden_builtin_types, [&list](const auto& item) {
+      list.Append(static_cast<int>(item));
+    });
     prefs_.SetList(sidebar::kSidebarHiddenBuiltInItems, std::move(list));
   }
   {
@@ -467,9 +471,14 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
       SidebarItem::BuiltInItemType::kWallet,
       SidebarItem::BuiltInItemType::kReadingList,
   };
-  // Get expected indexes (the custom item will replace the index of the removed
-  // built-in).
-  const auto& all_default_item_types = SidebarService::kDefaultBuiltInItemTypes;
+  // Get expected indexes (excluding the hidden items).
+  std::vector<SidebarItem::BuiltInItemType> all_default_item_types;
+  base::ranges::for_each(SidebarService::kDefaultBuiltInItemTypes,
+                         [&](const auto& btint) {
+                           if (!base::Contains(hidden_builtin_types, btint)) {
+                             all_default_item_types.push_back(btint);
+                           }
+                         });
   // There should also be the custom item we added
   EXPECT_EQ(remaining_default_items.size() + 1, service_->items().size());
   for (auto built_in_type : remaining_default_items) {
@@ -872,9 +881,11 @@ class SidebarServiceOrderingTest : public testing::Test {
  public:
   SidebarServiceOrderingTest() = default;
   SidebarServiceOrderingTest(const SidebarServiceOrderingTest&) = delete;
-  SidebarServiceOrderingTest& operator=(const SidebarServiceOrderingTest&) = delete;
+  SidebarServiceOrderingTest& operator=(const SidebarServiceOrderingTest&) =
+      delete;
   SidebarServiceOrderingTest(const SidebarServiceOrderingTest&&) = delete;
-  SidebarServiceOrderingTest& operator=(const SidebarServiceOrderingTest&&) = delete;
+  SidebarServiceOrderingTest& operator=(const SidebarServiceOrderingTest&&) =
+      delete;
 
   ~SidebarServiceOrderingTest() override = default;
 
@@ -912,15 +923,16 @@ class SidebarServiceOrderingTest : public testing::Test {
     sidebar_service_->AddObserver(&observer_);
   }
 
-  bool ValidateBuiltInTypesOrdering(const std::vector<SidebarItem::BuiltInItemType>& defined_order) {
+  bool ValidateBuiltInTypesOrdering(
+      const std::vector<SidebarItem::BuiltInItemType>& defined_order) {
     size_t srv_items_index = 0, dbt_index = 0;
-    const auto default_btin_types_count =
-        defined_order.size();
+    const auto default_btin_types_count = defined_order.size();
     std::vector<SidebarItem> only_builtin_types;
-    base::ranges::copy_if(sidebar_service_->items(),
-    std::back_inserter(only_builtin_types), [](const SidebarItem& item){
-      return item.built_in_item_type != SidebarItem::BuiltInItemType::kNone;
-    });
+    base::ranges::copy_if(
+        sidebar_service_->items(), std::back_inserter(only_builtin_types),
+        [](const SidebarItem& item) {
+          return item.built_in_item_type != SidebarItem::BuiltInItemType::kNone;
+        });
 
     const auto srv_items_count = only_builtin_types.size();
     while (srv_items_index < srv_items_count &&
@@ -930,28 +942,29 @@ class SidebarServiceOrderingTest : public testing::Test {
         srv_items_index++;
       }
       dbt_index++;
-    }    
+    }
     return srv_items_index == srv_items_count;
   }
 
-  void LoadFromPrefsTest(base::Value::Dict sidebar_prefs, 
+  void LoadFromPrefsTest(
+      base::Value::Dict sidebar_prefs,
       const std::vector<SidebarItem::BuiltInItemType>& defined_order,
       const size_t& expected_items_loaded) {
-   //base::Value::Dict sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
-   GetPrefs()->Set(kSidebarItems,
-                   std::move(sidebar_prefs.Find("sidebar_items")->Clone()));
-   GetPrefs()->SetInteger(kSidebarShowOption, 0);
-   EXPECT_EQ(0, GetPrefs()->GetInteger(kSidebarShowOption));
+    // base::Value::Dict
+    // sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
+    GetPrefs()->Set(kSidebarItems,
+                    std::move(sidebar_prefs.Find("sidebar_items")->Clone()));
+    GetPrefs()->SetInteger(kSidebarShowOption, 0);
+    EXPECT_EQ(0, GetPrefs()->GetInteger(kSidebarShowOption));
 
-   InitSideBarService();
+    InitSideBarService();
 
-  EXPECT_EQ(expected_items_loaded,
-    GetSidebarService()->items().size());
-  EXPECT_TRUE(ValidateBuiltInTypesOrdering(defined_order))
-     << "Wrong order detected";
+    EXPECT_EQ(expected_items_loaded, GetSidebarService()->items().size());
+    EXPECT_TRUE(ValidateBuiltInTypesOrdering(defined_order))
+        << "Wrong order detected";
   }
 
-private:
+ private:
 #if BUILDFLAG(ENABLE_AI_CHAT)
   base::test::ScopedFeatureList scoped_feature_list_;
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
@@ -962,74 +975,77 @@ private:
   NiceMock<MockSidebarServiceObserver> observer_;
 };
 
-
 TEST_F(SidebarServiceOrderingTest, BuiltInItemsDefaultOrder) {
   InitSideBarService();
   EXPECT_EQ(
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    5UL,
+      5UL,
 #else
-    4UL,
+      4UL,
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-    GetSidebarService()->items().size());
+      GetSidebarService()->items().size());
   EXPECT_EQ(0UL, GetSidebarService()->GetHiddenDefaultSidebarItems().size());
 
-  EXPECT_TRUE(ValidateBuiltInTypesOrdering({
-      SidebarItem::BuiltInItemType::kBraveTalk,
-      SidebarItem::BuiltInItemType::kWallet,
-      SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kReadingList,
-      SidebarItem::BuiltInItemType::kHistory,
-      SidebarItem::BuiltInItemType::kPlaylist,
-      SidebarItem::BuiltInItemType::kChatUI}));
+  EXPECT_TRUE(
+      ValidateBuiltInTypesOrdering({SidebarItem::BuiltInItemType::kBraveTalk,
+                                    SidebarItem::BuiltInItemType::kWallet,
+                                    SidebarItem::BuiltInItemType::kBookmarks,
+                                    SidebarItem::BuiltInItemType::kReadingList,
+                                    SidebarItem::BuiltInItemType::kHistory,
+                                    SidebarItem::BuiltInItemType::kPlaylist,
+                                    SidebarItem::BuiltInItemType::kChatUI}));
 }
 
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAllBuiltInVisible) {
-   base::Value::Dict sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
-   LoadFromPrefsTest(std::move(sidebar), {
-      SidebarItem::BuiltInItemType::kChatUI,
-      SidebarItem::BuiltInItemType::kWallet,
-      SidebarItem::BuiltInItemType::kReadingList,
-      SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kBraveTalk,      
-      },
+  base::Value::Dict sidebar(ParseTestJson(sidebar_all_builtin_visible_json));
+  LoadFromPrefsTest(std::move(sidebar),
+                    {
+                        SidebarItem::BuiltInItemType::kChatUI,
+                        SidebarItem::BuiltInItemType::kWallet,
+                        SidebarItem::BuiltInItemType::kReadingList,
+                        SidebarItem::BuiltInItemType::kBookmarks,
+                        SidebarItem::BuiltInItemType::kBraveTalk,
+                    },
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    8UL
+                    8UL
 #else
-    7UL
+                    7UL
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-      );
+  );
 }
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsWalletBuiltInHidden) {
-   base::Value::Dict sidebar(ParseTestJson(sidebar_builtin_wallet_hidden_json));
-   LoadFromPrefsTest(std::move(sidebar), {
-      SidebarItem::BuiltInItemType::kBraveTalk,
-      SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kReadingList,
-      SidebarItem::BuiltInItemType::kChatUI,
-      },
+  base::Value::Dict sidebar(ParseTestJson(sidebar_builtin_wallet_hidden_json));
+  LoadFromPrefsTest(std::move(sidebar),
+                    {
+                        SidebarItem::BuiltInItemType::kBraveTalk,
+                        SidebarItem::BuiltInItemType::kBookmarks,
+                        SidebarItem::BuiltInItemType::kReadingList,
+                        SidebarItem::BuiltInItemType::kChatUI,
+                    },
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    7UL
+                    7UL
 #else
-    6UL
+                    6UL
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-      );
+  );
 }
 TEST_F(SidebarServiceOrderingTest, LoadFromPrefsAiChatBuiltInNotListed) {
-   base::Value::Dict sidebar(ParseTestJson(sidebar_builtin_ai_chat_not_listed_json));
-   LoadFromPrefsTest(std::move(sidebar), {
-      SidebarItem::BuiltInItemType::kBraveTalk,
-      SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kReadingList,
-      SidebarItem::BuiltInItemType::kWallet,
-      SidebarItem::BuiltInItemType::kChatUI,
-      },
+  base::Value::Dict sidebar(
+      ParseTestJson(sidebar_builtin_ai_chat_not_listed_json));
+  LoadFromPrefsTest(std::move(sidebar),
+                    {
+                        SidebarItem::BuiltInItemType::kBraveTalk,
+                        SidebarItem::BuiltInItemType::kBookmarks,
+                        SidebarItem::BuiltInItemType::kReadingList,
+                        SidebarItem::BuiltInItemType::kWallet,
+                        SidebarItem::BuiltInItemType::kChatUI,
+                    },
 #if BUILDFLAG(ENABLE_AI_CHAT)
-    8UL
+                    8UL
 #else
-    7UL
+                    7UL
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-      );
+  );
 }
 
 }  // namespace sidebar
