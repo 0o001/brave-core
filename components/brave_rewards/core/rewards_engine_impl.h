@@ -30,7 +30,9 @@
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/zebpay/zebpay.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
 namespace brave_rewards::internal {
@@ -61,10 +63,12 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   RewardsEngineImpl& operator=(const RewardsEngineImpl&) = delete;
 
+  void Bind(mojo::PendingAssociatedReceiver<mojom::RewardsEngine> receiver);
+
+  void Initialize(base::OnceCallback<void(bool)> callback);
+
   // mojom::RewardsEngine implementation begin (in the order of appearance in
   // Mojom)
-  void Initialize(InitializeCallback callback) override;
-
   void GetEnvironment(GetEnvironmentCallback callback) override;
 
   void CreateRewardsWallet(const std::string& country,
@@ -418,6 +422,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   template <typename T>
   void WhenReady(T callback);
 
+  mojo::AssociatedReceiver<mojom::RewardsEngine> receiver_;
   mojo::AssociatedRemote<mojom::RewardsEngineClient> client_;
 
   promotion::Promotion promotion_;

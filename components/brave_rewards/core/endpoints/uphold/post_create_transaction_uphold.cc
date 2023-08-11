@@ -72,7 +72,7 @@ absl::optional<std::string> PostCreateTransactionUphold::Content() const {
   payload.Set("destination", transaction_->destination);
   payload.Set("denomination", std::move(denomination));
   if (transaction_->destination == uphold::GetFeeAddress()) {
-    payload.Set("message", kFeeMessage);
+    payload.Set("message", std::string(kFeeMessage));
   }
 
   std::string json;

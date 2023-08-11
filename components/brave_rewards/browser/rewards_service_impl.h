@@ -344,7 +344,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void Reset();
 
-  void OnEngineCreated();
+  void OnEngineCreated(bool success);
 
   void OnLegacyStateLoaded(LoadLegacyStateCallback callback,
                            std::pair<std::string, base::Value> data);

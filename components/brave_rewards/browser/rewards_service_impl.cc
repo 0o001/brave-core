@@ -467,13 +467,17 @@ void RewardsServiceImpl::StartEngineProcessIfNecessary() {
       base::BindOnce(&RewardsServiceImpl::OnEngineCreated, AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnEngineCreated() {
+void RewardsServiceImpl::OnEngineCreated(bool success) {
   if (!Connected()) {
     return;
   }
 
+  OnEngineInitialized(success ? mojom::Result::OK : mojom::Result::FAILED);
+
+  /*
   engine_->Initialize(
       base::BindOnce(&RewardsServiceImpl::OnEngineInitialized, AsWeakPtr()));
+  */
 }
 
 void RewardsServiceImpl::CreateRewardsWallet(

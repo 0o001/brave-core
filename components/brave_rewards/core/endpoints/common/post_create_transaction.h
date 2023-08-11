@@ -27,7 +27,7 @@ class PostCreateTransaction : public RequestBuilder {
   std::string ContentType() const override;
 
  protected:
-  inline static const std::string kFeeMessage =
+  inline static const char kFeeMessage[] =
       "5% transaction fee collected by Brave Software International";
 
   std::string token_;

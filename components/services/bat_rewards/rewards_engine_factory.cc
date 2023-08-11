@@ -5,10 +5,7 @@
 
 #include "brave/components/services/bat_rewards/rewards_engine_factory.h"
 
-#include <memory>
 #include <utility>
-
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 
 namespace brave_rewards::internal {
 
@@ -35,12 +32,36 @@ void RewardsEngineFactory::CreateRewardsEngine(
     reconcile_interval = options->reconcile_interval;
     retry_interval = options->retry_interval;
 
+    engine_ = std::make_unique<RewardsEngineImpl>(std::move(client_remote));
+
+    LOG(ERROR) << "CreateRewardsEngine";
+
+    engine_->Initialize(base::BindOnce(
+        &RewardsEngineFactory::OnEngineInitialized,
+        base::Unretained(this),
+        std::move(engine_receiver),
+        std::move(callback)));
+
+    return;
+
+    /*
     engine_ = mojo::MakeSelfOwnedAssociatedReceiver(
         std::make_unique<RewardsEngineImpl>(std::move(client_remote)),
         std::move(engine_receiver));
+    */
   }
 
-  std::move(callback).Run();
+  std::move(callback).Run(false);
+}
+
+void RewardsEngineFactory::OnEngineInitialized(
+    mojo::PendingAssociatedReceiver<mojom::RewardsEngine> engine_receiver,
+    CreateRewardsEngineCallback callback,
+    bool success) {
+  DCHECK(engine_);
+  LOG(ERROR) << "OnEngineInitialized";
+  engine_->Bind(std::move(engine_receiver));
+  std::move(callback).Run(success);
 }
 
 }  // namespace brave_rewards::internal

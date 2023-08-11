@@ -22,7 +22,8 @@ namespace brave_rewards::internal {
 
 RewardsEngineImpl::RewardsEngineImpl(
     mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote)
-    : client_(std::move(client_remote)),
+    : receiver_(this),
+      client_(std::move(client_remote)),
       promotion_(*this),
       publisher_(*this),
       media_(*this),
@@ -45,17 +46,32 @@ RewardsEngineImpl::~RewardsEngineImpl() {
   set_client_for_logging(nullptr);
 }
 
-// mojom::RewardsEngine implementation begin (in the order of appearance in
-// Mojom)
-void RewardsEngineImpl::Initialize(InitializeCallback callback) {
+void RewardsEngineImpl::Bind(
+    mojo::PendingAssociatedReceiver<mojom::RewardsEngine> receiver) {
+  CHECK(!receiver_);
+  CHECK(IsReady());
+  receiver_.Bind(std::move(receiver));
+}
+
+void RewardsEngineImpl::Initialize(base::OnceCallback<void(bool)> callback) {
   if (ready_state_ != ReadyState::kUninitialized) {
     BLOG(0, "Already initializing");
-    return std::move(callback).Run(mojom::Result::FAILED);
+    return std::move(callback).Run(false);
   }
 
   ready_state_ = ReadyState::kInitializing;
-  InitializeDatabase(ToLegacyCallback(std::move(callback)));
+
+  LOG(ERROR) << "RewardsEngineImpl::Initialize!";
+
+  InitializeDatabase(
+    [callback = ToLegacyCallback(std::move(callback))](mojom::Result result) {
+      LOG(ERROR) << "HEY THERE!";
+      callback(result == mojom::Result::OK);
+    });
 }
+
+// mojom::RewardsEngine implementation begin (in the order of appearance in
+// Mojom)
 
 void RewardsEngineImpl::GetEnvironment(GetEnvironmentCallback callback) {
   std::move(callback).Run(_environment);
@@ -64,28 +80,27 @@ void RewardsEngineImpl::GetEnvironment(GetEnvironmentCallback callback) {
 void RewardsEngineImpl::CreateRewardsWallet(
     const std::string& country,
     CreateRewardsWalletCallback callback) {
-  WhenReady([this, country, callback = std::move(callback)]() mutable {
-    wallet()->CreateWalletIfNecessary(
-        country.empty() ? absl::nullopt
-                        : absl::optional<std::string>(std::move(country)),
-        std::move(callback));
-  });
+  CHECK(IsReady());
+  wallet()->CreateWalletIfNecessary(
+      country.empty() ? absl::nullopt
+                      : absl::optional<std::string>(std::move(country)),
+      std::move(callback));
 }
 
 void RewardsEngineImpl::GetRewardsParameters(
     GetRewardsParametersCallback callback) {
-  WhenReady([this, callback = std::move(callback)]() mutable {
-    auto params = state()->GetRewardsParameters();
-    if (params->rate == 0.0) {
-      // A rate of zero indicates that the rewards parameters have
-      // not yet been successfully initialized from the server.
-      BLOG(1, "Rewards parameters not set - fetching from server");
-      api()->FetchParameters(std::move(callback));
-      return;
-    }
+  CHECK(IsReady());
 
-    std::move(callback).Run(std::move(params));
-  });
+  auto params = state()->GetRewardsParameters();
+  if (params->rate == 0.0) {
+    // A rate of zero indicates that the rewards parameters have
+    // not yet been successfully initialized from the server.
+    BLOG(1, "Rewards parameters not set - fetching from server");
+    api()->FetchParameters(std::move(callback));
+    return;
+  }
+
+  std::move(callback).Run(std::move(params));
 }
 
 void RewardsEngineImpl::GetAutoContributeProperties(
