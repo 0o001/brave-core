@@ -10,9 +10,8 @@
 
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
 #include "brave/components/services/bat_rewards/public/interfaces/rewards_engine_factory.mojom.h"
-#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
-#include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 
 namespace brave_rewards::internal {
@@ -28,16 +27,16 @@ class RewardsEngineFactory : public mojom::RewardsEngineFactory {
   RewardsEngineFactory& operator=(const RewardsEngineFactory&) = delete;
 
   void CreateRewardsEngine(
-      mojo::PendingAssociatedReceiver<mojom::RewardsEngine> engine_receiver,
-      mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
+      mojo::PendingReceiver<mojom::RewardsEngine> engine_receiver,
+      mojo::PendingRemote<mojom::RewardsEngineClient> client_remote,
       mojom::RewardsEngineOptionsPtr options,
       CreateRewardsEngineCallback callback) override;
 
  private:
   void OnEngineInitialized(
-    mojo::PendingAssociatedReceiver<mojom::RewardsEngine> engine_receiver,
-    CreateRewardsEngineCallback callback,
-    bool success);
+      mojo::PendingReceiver<mojom::RewardsEngine> engine_receiver,
+      CreateRewardsEngineCallback callback,
+      bool success);
 
   mojo::Receiver<mojom::RewardsEngineFactory> receiver_;
   std::unique_ptr<RewardsEngineImpl> engine_;

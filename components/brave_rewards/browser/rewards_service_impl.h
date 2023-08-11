@@ -37,8 +37,7 @@
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/browser_thread.h"
-#include "mojo/public/cpp/bindings/associated_receiver.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "ui/gfx/image/image.h"
 
@@ -579,8 +578,8 @@ class RewardsServiceImpl : public RewardsService,
       nullptr;  // NOT OWNED
   bool greaselion_enabled_ = false;
 #endif
-  mojo::AssociatedReceiver<mojom::RewardsEngineClient> receiver_;
-  mojo::AssociatedRemote<mojom::RewardsEngine> engine_;
+  mojo::Receiver<mojom::RewardsEngineClient> receiver_;
+  mojo::Remote<mojom::RewardsEngine> engine_;
   mojo::Remote<mojom::RewardsEngineFactory> engine_factory_;
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
   const scoped_refptr<base::SequencedTaskRunner> json_sanitizer_task_runner_;

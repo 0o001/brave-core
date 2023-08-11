@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_H_
 
 #include <map>
-#include <queue>
 #include <string>
 #include <utility>
 
@@ -30,10 +29,10 @@
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/zebpay/zebpay.h"
-#include "mojo/public/cpp/bindings/associated_receiver.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
-#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
-#include "mojo/public/cpp/bindings/pending_associated_remote.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "mojo/public/cpp/bindings/remote.h"
 
 namespace brave_rewards::internal {
 
@@ -55,7 +54,7 @@ inline constexpr uint64_t kPublisherListRefreshInterval =
 class RewardsEngineImpl : public mojom::RewardsEngine {
  public:
   explicit RewardsEngineImpl(
-      mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote);
+      mojo::PendingRemote<mojom::RewardsEngineClient> client_remote);
 
   ~RewardsEngineImpl() override;
 
@@ -63,7 +62,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   RewardsEngineImpl& operator=(const RewardsEngineImpl&) = delete;
 
-  void Bind(mojo::PendingAssociatedReceiver<mojom::RewardsEngine> receiver);
+  void Bind(mojo::PendingReceiver<mojom::RewardsEngine> receiver);
 
   void Initialize(base::OnceCallback<void(bool)> callback);
 
@@ -419,11 +418,8 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   void OnAllDone(mojom::Result result, LegacyResultCallback callback);
 
-  template <typename T>
-  void WhenReady(T callback);
-
-  mojo::AssociatedReceiver<mojom::RewardsEngine> receiver_;
-  mojo::AssociatedRemote<mojom::RewardsEngineClient> client_;
+  mojo::Receiver<mojom::RewardsEngine> receiver_;
+  mojo::Remote<mojom::RewardsEngineClient> client_;
 
   promotion::Promotion promotion_;
   publisher::Publisher publisher_;
@@ -443,7 +439,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   std::map<uint32_t, mojom::VisitData> current_pages_;
   uint64_t last_tab_active_time_ = 0;
   uint32_t last_shown_tab_id_ = -1;
-  std::queue<std::function<void()>> ready_callbacks_;
   ReadyState ready_state_ = ReadyState::kUninitialized;
 };
 

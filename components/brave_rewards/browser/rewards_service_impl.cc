@@ -462,8 +462,8 @@ void RewardsServiceImpl::StartEngineProcessIfNecessary() {
   auto options = HandleFlags(RewardsFlags::ForCurrentProcess());
   PrepareEngineEnvForTesting(*options);
   engine_factory_->CreateRewardsEngine(
-      engine_.BindNewEndpointAndPassReceiver(),
-      receiver_.BindNewEndpointAndPassRemote(), std::move(options),
+      engine_.BindNewPipeAndPassReceiver(),
+      receiver_.BindNewPipeAndPassRemote(), std::move(options),
       base::BindOnce(&RewardsServiceImpl::OnEngineCreated, AsWeakPtr()));
 }
 
@@ -471,13 +471,7 @@ void RewardsServiceImpl::OnEngineCreated(bool success) {
   if (!Connected()) {
     return;
   }
-
   OnEngineInitialized(success ? mojom::Result::OK : mojom::Result::FAILED);
-
-  /*
-  engine_->Initialize(
-      base::BindOnce(&RewardsServiceImpl::OnEngineInitialized, AsWeakPtr()));
-  */
 }
 
 void RewardsServiceImpl::CreateRewardsWallet(

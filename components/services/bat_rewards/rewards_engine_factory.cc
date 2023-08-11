@@ -16,8 +16,8 @@ RewardsEngineFactory::RewardsEngineFactory(
 RewardsEngineFactory::~RewardsEngineFactory() = default;
 
 void RewardsEngineFactory::CreateRewardsEngine(
-    mojo::PendingAssociatedReceiver<mojom::RewardsEngine> engine_receiver,
-    mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
+    mojo::PendingReceiver<mojom::RewardsEngine> engine_receiver,
+    mojo::PendingRemote<mojom::RewardsEngineClient> client_remote,
     mojom::RewardsEngineOptionsPtr options,
     CreateRewardsEngineCallback callback) {
   if (!engine_) {
@@ -34,32 +34,21 @@ void RewardsEngineFactory::CreateRewardsEngine(
 
     engine_ = std::make_unique<RewardsEngineImpl>(std::move(client_remote));
 
-    LOG(ERROR) << "CreateRewardsEngine";
-
     engine_->Initialize(base::BindOnce(
-        &RewardsEngineFactory::OnEngineInitialized,
-        base::Unretained(this),
-        std::move(engine_receiver),
-        std::move(callback)));
+        &RewardsEngineFactory::OnEngineInitialized, base::Unretained(this),
+        std::move(engine_receiver), std::move(callback)));
 
     return;
-
-    /*
-    engine_ = mojo::MakeSelfOwnedAssociatedReceiver(
-        std::make_unique<RewardsEngineImpl>(std::move(client_remote)),
-        std::move(engine_receiver));
-    */
   }
 
   std::move(callback).Run(false);
 }
 
 void RewardsEngineFactory::OnEngineInitialized(
-    mojo::PendingAssociatedReceiver<mojom::RewardsEngine> engine_receiver,
+    mojo::PendingReceiver<mojom::RewardsEngine> engine_receiver,
     CreateRewardsEngineCallback callback,
     bool success) {
   DCHECK(engine_);
-  LOG(ERROR) << "OnEngineInitialized";
   engine_->Bind(std::move(engine_receiver));
   std::move(callback).Run(success);
 }
