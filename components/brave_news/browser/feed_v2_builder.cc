@@ -350,7 +350,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateSpecialBlock(
         "ad", base::Time::Now(), "Advert", "Some handy info",
         GURL("https://example.com"), "foo",
         mojom::Image::NewImageUrl(GURL("https://example.com/favicon.ico")), "",
-        "", 0.0, "Now");
+        "", 0.0, 0.0, "Now");
     result.push_back(mojom::FeedItemV2::NewAdvert(
         mojom::PromotedArticle::New(std::move(metadata), "test")));
   } else {
