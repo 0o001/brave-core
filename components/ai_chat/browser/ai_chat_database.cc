@@ -9,11 +9,6 @@
 #include "sql/transaction.h"
 
 namespace {
-
-#define CONVERSATION_ROW_FIELDS "id, title, page_url"
-#define CONVERSATION_ENTRY_FIELDS "id, date, character_type, conversation_id"
-#define CONVERSATION_ENTRY_TEXT_FIELDS "id, date, text, conversation_entry_id"
-
 // Do not use To/FromInternalValues in base::Time
 // https://bugs.chromium.org/p/chromium/issues/detail?id=634507#c23
 
@@ -33,29 +28,30 @@ AIChatDatabase::AIChatDatabase()
 
 AIChatDatabase::~AIChatDatabase() = default;
 
-sql::InitStatus AIChatDatabase::Init(const base::FilePath& db_file_path) {
+bool AIChatDatabase::Init(const base::FilePath& db_file_path) {
   if (!GetDB().Open(db_file_path)) {
-    return sql::INIT_FAILURE;
+    return false;
   }
 
   if (!CreateConversationTable() || !CreateConversationEntryTable() ||
       !CreateConversationEntryTextTable()) {
     DVLOG(0) << "Failure to create tables\n";
-    return sql::INIT_FAILURE;
+    return false;
   }
 
-  return sql::INIT_OK;
+  return true;
 }
 
 std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
   sql::Statement statement(GetDB().GetUniqueStatement(
       "SELECT conversation.*, entries.date "
       "FROM conversation"
-      " JOIN ("
+      " LEFT JOIN ("
       "SELECT conversation_id, date"
       " FROM conversation_entry"
       " GROUP BY conversation_id"
       " ORDER BY date DESC"
+      " LIMIT 1"
       ") AS entries"
       " ON conversation.id = entries.conversation_id"));
 
@@ -73,7 +69,7 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
   return conversation_list;
 }
 
-std::vector<mojom::ConversationEntryPtr> AIChatDatabase::GetConversationEntry(
+std::vector<mojom::ConversationEntryPtr> AIChatDatabase::GetConversationEntries(
     int64_t conversation_id) {
   sql::Statement statement(GetDB().GetUniqueStatement(
       "SELECT conversation_entry.*, entry_text.* "
@@ -84,7 +80,7 @@ std::vector<mojom::ConversationEntryPtr> AIChatDatabase::GetConversationEntry(
       ") AS entry_text"
       " ON conversation_entry.id = entry_text.conversation_entry_id"
       " WHERE conversation_id=?"
-      " ORDER BY conversation_entry.date DESC"));
+      " ORDER BY conversation_entry.date ASC"));
 
   statement.BindInt64(0, conversation_id);
 
@@ -125,12 +121,13 @@ std::vector<mojom::ConversationEntryPtr> AIChatDatabase::GetConversationEntry(
 
 bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation) {
   sql::Statement statement(GetDB().GetUniqueStatement(
-      "INSERT INTO conversation(" CONVERSATION_ROW_FIELDS
-      ") VALUES(NULL, ?, ?)"));
+      "INSERT INTO conversation(id, title, page_url) VALUES(NULL, ?, ?)"));
 
   statement.BindString(0, conversation->title);
   if (conversation->page_url.has_value()) {
     statement.BindString(1, conversation->page_url->spec());
+  } else {
+    statement.BindNull(1);
   }
 
   if (!statement.Run()) {
@@ -160,8 +157,8 @@ bool AIChatDatabase::AddConversationEntry(int64_t conversation_id,
   }
 
   sql::Statement insert_conversation_entry_statement(GetDB().GetUniqueStatement(
-      "INSERT INTO conversation_entry(" CONVERSATION_ENTRY_FIELDS
-      ") VALUES(NULL, ?, ?, ?)"));
+      "INSERT INTO conversation_entry(id, date, character_type, "
+      "conversation_id) VALUES(NULL, ?, ?, ?)"));
   // ConversationEntry's date should always match first text's date
   insert_conversation_entry_statement.BindTimeDelta(
       0, SerializeTimeToDelta(entry->texts[0]->date));
@@ -179,10 +176,10 @@ bool AIChatDatabase::AddConversationEntry(int64_t conversation_id,
 
   for (const auto& text : entry->texts) {
     sql::Statement insert_conversation_text_statement(
-        GetDB().GetUniqueStatement(
-            "INSERT INTO "
-            "conversation_entry_text(" CONVERSATION_ENTRY_TEXT_FIELDS
-            ") VALUES(NULL, ?, ?, ?)"));
+        GetDB().GetUniqueStatement("INSERT INTO "
+                                   "conversation_entry_text("
+                                   "id, date, text, conversation_entry_id"
+                                   ") VALUES(NULL, ?, ?, ?)"));
 
     insert_conversation_text_statement.BindTimeDelta(
         0, SerializeTimeToDelta(text->date));

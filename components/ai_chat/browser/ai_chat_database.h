@@ -25,10 +25,10 @@ class AIChatDatabase {
   AIChatDatabase& operator=(const AIChatDatabase&) = delete;
   ~AIChatDatabase();
 
-  sql::InitStatus Init(const base::FilePath& db_file_path);
+  bool Init(const base::FilePath& db_file_path);
 
   std::vector<mojom::ConversationPtr> GetAllConversations();
-  std::vector<mojom::ConversationEntryPtr> GetConversationEntry(
+  std::vector<mojom::ConversationEntryPtr> GetConversationEntries(
       int64_t conversation_id);
   bool AddConversation(mojom::ConversationPtr conversation);
   bool AddConversationEntry(int64_t conversation_id,

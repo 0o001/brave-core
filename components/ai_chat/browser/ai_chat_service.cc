@@ -20,9 +20,8 @@ AIChatService::AIChatService(content::BrowserContext* context)
     : base_dir_(context->GetPath().Append(kBaseDirName)) {
   ai_chat_db_ = base::SequenceBound<AIChatDatabase>(GetTaskRunner());
 
-  auto on_response = base::BindOnce([](sql::InitStatus status) {
-    DVLOG(1) << "Init with status: " << status << "\n";
-  });
+  auto on_response = base::BindOnce(
+      [](bool success) { DVLOG(1) << "Init: " << success << "\n"; });
 
   ai_chat_db_.AsyncCall(&AIChatDatabase::Init)
       .WithArgs(base_dir_)

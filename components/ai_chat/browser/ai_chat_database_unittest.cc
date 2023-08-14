@@ -49,8 +49,8 @@ class AIChatDatabaseTest : public testing::Test {
   void InitDBAndDoWork(Func operation) {
     db_.AsyncCall(&AIChatDatabase::Init)
         .WithArgs(db_file_path())
-        .Then(base::BindLambdaForTesting([&](sql::InitStatus status) {
-          ASSERT_FALSE(status);  // 0 is INIT_OK
+        .Then(base::BindLambdaForTesting([&](bool success) {
+          ASSERT_TRUE(success);  // 0 is INIT_OK
           ASSERT_TRUE(base::PathExists(db_file_path()));
           operation();
         }));
@@ -133,7 +133,7 @@ TEST_F(AIChatDatabaseTest, ReadConversation) {
                               kFirstTextCreatedAt.ToDeltaSinceWindowsEpoch()
                                   .InMicroseconds());
 
-                          db_.AsyncCall(&AIChatDatabase::GetConversationEntry)
+                          db_.AsyncCall(&AIChatDatabase::GetConversationEntries)
                               .WithArgs(1)
                               .Then(base::BindLambdaForTesting(
                                   [&](std::vector<mojom::ConversationEntryPtr>
