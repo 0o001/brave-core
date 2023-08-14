@@ -30,8 +30,8 @@ class AIChatDatabase {
   std::vector<mojom::ConversationPtr> GetAllConversations();
   std::vector<mojom::ConversationEntryPtr> GetConversationEntries(
       int64_t conversation_id);
-  bool AddConversation(mojom::ConversationPtr conversation);
-  bool AddConversationEntry(int64_t conversation_id,
+  int64_t AddConversation(mojom::ConversationPtr conversation);
+  int64_t AddConversationEntry(int64_t conversation_id,
                             mojom::ConversationEntryPtr entry);
   bool DeleteConversation(int64_t conversation_id);
   bool DropAllTables();

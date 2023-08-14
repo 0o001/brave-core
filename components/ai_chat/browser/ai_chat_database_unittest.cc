@@ -70,15 +70,15 @@ TEST_F(AIChatDatabaseTest, WriteConversation) {
       mojom::ConversationEntryText::New(1, base::Time::Now(), "Hello"));
 
   InitDBAndDoWork([&]() {
-    auto on_conversation_entry_added = [&](bool has_run) {
-      EXPECT_TRUE(has_run);
+    auto on_conversation_entry_added = [&](int64_t entry_id) {
+      EXPECT_EQ(entry_id, INT64_C(1));
     };
 
-    auto on_conversation_added = [&](bool has_run) {
-      EXPECT_TRUE(has_run);
+    auto on_conversation_added = [&](int64_t conversation_id) {
+      EXPECT_EQ(conversation_id, INT64_C(1));
 
       db_.AsyncCall(&AIChatDatabase::AddConversationEntry)
-          .WithArgs(INT64_C(1),
+          .WithArgs(conversation_id,
                     mojom::ConversationEntry::New(
                         INT64_C(-1), base::Time::Now(),
                         mojom::CharacterType::HUMAN, std::move(texts)))
@@ -111,17 +111,22 @@ TEST_F(AIChatDatabaseTest, ReadConversation) {
         .WithArgs(mojom::Conversation::New(kConversationId, kFirstTextCreatedAt,
                                            "Summarizing Brave",
                                            GURL("https://brave.com/")))
-        .Then(base::BindLambdaForTesting([&](bool has_run) {
+        .Then(base::BindLambdaForTesting([&](int64_t conversation_id) {
+          EXPECT_EQ(conversation_id, INT64_C(1));
+
           db_.AsyncCall(&AIChatDatabase::AddConversationEntry)
-              .WithArgs(kConversationId,
+              .WithArgs(conversation_id,
                         mojom::ConversationEntry::New(
                             INT64_C(-1), kFirstTextCreatedAt,
                             mojom::CharacterType::ASSISTANT, std::move(kTexts)))
-              .Then(base::BindLambdaForTesting([&](bool has_run) {
+              .Then(base::BindLambdaForTesting([&](int64_t entry_id) {
+                EXPECT_EQ(entry_id, INT64_C(1));
+
                 db_.AsyncCall(&AIChatDatabase::GetAllConversations)
                     .Then(base::BindLambdaForTesting(
                         [&](std::vector<mojom::ConversationPtr> conversations) {
                           EXPECT_FALSE(conversations.empty());
+                          EXPECT_EQ(conversations[0]->id, INT64_C(1));
                           EXPECT_EQ(conversations[0]->title,
                                     "Summarizing Brave");
                           EXPECT_EQ(conversations[0]->page_url->spec(),

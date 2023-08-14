@@ -119,9 +119,10 @@ std::vector<mojom::ConversationEntryPtr> AIChatDatabase::GetConversationEntries(
   return history;
 }
 
-bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation) {
-  sql::Statement statement(GetDB().GetUniqueStatement(
-      "INSERT INTO conversation(id, title, page_url) VALUES(NULL, ?, ?)"));
+int64_t AIChatDatabase::AddConversation(mojom::ConversationPtr conversation) {
+  sql::Statement statement(
+      GetDB().GetUniqueStatement("INSERT INTO conversation(id, title, "
+                                 "page_url) VALUES(NULL, ?, ?) RETURNING id"));
 
   statement.BindString(0, conversation->title);
   if (conversation->page_url.has_value()) {
@@ -130,20 +131,20 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation) {
     statement.BindNull(1);
   }
 
-  if (!statement.Run()) {
-    DVLOG(0) << "Failed to execute 'conversation' insert statement";
-    return false;
+  if (!statement.Step()) {
+    DVLOG(0) << "Failed to execute 'conversation' insert statement\n";
+    return INT64_C(-1);
   }
 
-  return true;
+  return statement.ColumnInt64(0);
 }
 
-bool AIChatDatabase::AddConversationEntry(int64_t conversation_id,
+int64_t AIChatDatabase::AddConversationEntry(int64_t conversation_id,
                                           mojom::ConversationEntryPtr entry) {
   sql::Transaction transaction(&db_);
   if (!transaction.Begin()) {
     DVLOG(0) << "Transaction cannot begin\n";
-    return false;
+    return INT64_C(-1);;
   }
 
   sql::Statement get_conversation_id_statement(
@@ -153,12 +154,12 @@ bool AIChatDatabase::AddConversationEntry(int64_t conversation_id,
 
   if (!get_conversation_id_statement.Step()) {
     DVLOG(0) << "ID not found in 'conversation' table";
-    return false;
+    return INT64_C(-1);;
   }
 
   sql::Statement insert_conversation_entry_statement(GetDB().GetUniqueStatement(
       "INSERT INTO conversation_entry(id, date, character_type, "
-      "conversation_id) VALUES(NULL, ?, ?, ?)"));
+      "conversation_id) VALUES(NULL, ?, ?, ?) RETURNING id"));
   // ConversationEntry's date should always match first text's date
   insert_conversation_entry_statement.BindTimeDelta(
       0, SerializeTimeToDelta(entry->texts[0]->date));
@@ -167,12 +168,13 @@ bool AIChatDatabase::AddConversationEntry(int64_t conversation_id,
   insert_conversation_entry_statement.BindInt64(
       2, get_conversation_id_statement.ColumnInt64(0));
 
-  if (!insert_conversation_entry_statement.Run()) {
+  if (!insert_conversation_entry_statement.Step()) {
     DVLOG(0) << "Failed to execute 'conversation_entry' insert statement\n";
-    return false;
+    return INT64_C(-1);;
   }
 
-  int64_t conversation_entry_row_id = GetDB().GetLastInsertRowId();
+  int64_t conversation_entry_row_id =
+      insert_conversation_entry_statement.ColumnInt64(0);
 
   for (const auto& text : entry->texts) {
     sql::Statement insert_conversation_text_statement(
@@ -189,12 +191,12 @@ bool AIChatDatabase::AddConversationEntry(int64_t conversation_id,
     if (!insert_conversation_text_statement.Run()) {
       DVLOG(0)
           << "Failed to execute 'conversation_entry_text' insert statement\n";
-      return false;
+      return INT64_C(-1);;
     }
   }
 
   transaction.Commit();
-  return true;
+  return conversation_entry_row_id;
 }
 
 bool AIChatDatabase::DeleteConversation(int64_t conversation_id) {
