@@ -4,6 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ai_chat/browser/ai_chat_database.h"
+
+#include <utility>
+
 #include "base/time/time.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
@@ -58,12 +61,12 @@ std::vector<mojom::ConversationPtr> AIChatDatabase::GetAllConversations() {
   std::vector<mojom::ConversationPtr> conversation_list;
 
   while (statement.Step()) {
-    mojom::Conversation conversation;
-    conversation.id = statement.ColumnInt64(0);
-    conversation.title = statement.ColumnString(1);
-    conversation.page_url = GURL(statement.ColumnString(2));
-    conversation.date = DeserializeTime(statement.ColumnInt64(3));
-    conversation_list.emplace_back(conversation.Clone());
+    mojom::ConversationPtr conversation = mojom::Conversation::New();
+    conversation->id = statement.ColumnInt64(0);
+    conversation->title = statement.ColumnString(1);
+    conversation->page_url = GURL(statement.ColumnString(2));
+    conversation->date = DeserializeTime(statement.ColumnInt64(3));
+    conversation_list.emplace_back(std::move(conversation));
   }
 
   return conversation_list;
@@ -87,10 +90,11 @@ std::vector<mojom::ConversationEntryPtr> AIChatDatabase::GetConversationEntries(
   std::vector<mojom::ConversationEntryPtr> history;
 
   while (statement.Step()) {
-    mojom::ConversationEntryText entry_text;
-    entry_text.id = statement.ColumnInt64(4);
-    entry_text.date = DeserializeTime(statement.ColumnInt64(5));
-    entry_text.text = statement.ColumnString(6);
+    mojom::ConversationEntryTextPtr entry_text =
+        mojom::ConversationEntryText::New();
+    entry_text->id = statement.ColumnInt64(4);
+    entry_text->date = DeserializeTime(statement.ColumnInt64(5));
+    entry_text->text = statement.ColumnString(6);
 
     int64_t conversation_entry_id = statement.ColumnInt64(7);
 
@@ -102,18 +106,18 @@ std::vector<mojom::ConversationEntryPtr> AIChatDatabase::GetConversationEntries(
 
     // A ConversationEntry can include multiple generated texts
     if (iter != history.end()) {
-      (*iter)->texts.emplace_back(entry_text.Clone());
+      iter->get()->texts.emplace_back(std::move(entry_text));
       continue;
     }
 
-    mojom::ConversationEntry entry;
-    entry.id = statement.ColumnInt64(0);
-    entry.date = DeserializeTime(statement.ColumnInt64(1));
-    entry.character_type =
+    mojom::ConversationEntryPtr entry = mojom::ConversationEntry::New();
+    entry->id = statement.ColumnInt64(0);
+    entry->date = DeserializeTime(statement.ColumnInt64(1));
+    entry->character_type =
         static_cast<mojom::CharacterType>(statement.ColumnInt(2));
-    entry.texts.emplace_back(entry_text.Clone());
+    entry->texts.emplace_back(std::move(entry_text));
 
-    history.emplace_back(entry.Clone());
+    history.emplace_back(std::move(entry));
   }
 
   return history;
@@ -139,12 +143,14 @@ int64_t AIChatDatabase::AddConversation(mojom::ConversationPtr conversation) {
   return statement.ColumnInt64(0);
 }
 
-int64_t AIChatDatabase::AddConversationEntry(int64_t conversation_id,
-                                          mojom::ConversationEntryPtr entry) {
+int64_t AIChatDatabase::AddConversationEntry(
+    int64_t conversation_id,
+    mojom::ConversationEntryPtr entry) {
   sql::Transaction transaction(&db_);
   if (!transaction.Begin()) {
     DVLOG(0) << "Transaction cannot begin\n";
-    return INT64_C(-1);;
+    return INT64_C(-1);
+    ;
   }
 
   sql::Statement get_conversation_id_statement(
@@ -154,7 +160,8 @@ int64_t AIChatDatabase::AddConversationEntry(int64_t conversation_id,
 
   if (!get_conversation_id_statement.Step()) {
     DVLOG(0) << "ID not found in 'conversation' table";
-    return INT64_C(-1);;
+    return INT64_C(-1);
+    ;
   }
 
   sql::Statement insert_conversation_entry_statement(GetDB().GetUniqueStatement(
@@ -170,7 +177,8 @@ int64_t AIChatDatabase::AddConversationEntry(int64_t conversation_id,
 
   if (!insert_conversation_entry_statement.Step()) {
     DVLOG(0) << "Failed to execute 'conversation_entry' insert statement\n";
-    return INT64_C(-1);;
+    return INT64_C(-1);
+    ;
   }
 
   int64_t conversation_entry_row_id =
@@ -191,7 +199,8 @@ int64_t AIChatDatabase::AddConversationEntry(int64_t conversation_id,
     if (!insert_conversation_text_statement.Run()) {
       DVLOG(0)
           << "Failed to execute 'conversation_entry_text' insert statement\n";
-      return INT64_C(-1);;
+      return INT64_C(-1);
+      ;
     }
   }
 
