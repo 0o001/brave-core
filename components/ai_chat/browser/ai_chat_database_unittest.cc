@@ -16,9 +16,14 @@
 #include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/threading/sequence_bound.h"
-#include "sql/init_status.h"
 #include "sql/test/test_helpers.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+namespace {
+int64_t GetInternalValue(const base::Time& time) {
+  return time.ToDeltaSinceWindowsEpoch().InMicroseconds();
+}
+}  // namespace
 
 namespace ai_chat {
 
@@ -63,36 +68,30 @@ class AIChatDatabaseTest : public testing::Test {
   base::SequenceBound<AIChatDatabase> db_;
 };
 
-TEST_F(AIChatDatabaseTest, WriteConversation) {
-  // We need static storage variables throughout the depths of lambdas
-  static std::vector<mojom::ConversationEntryTextPtr> texts;
-  texts.emplace_back(
-      mojom::ConversationEntryText::New(1, base::Time::Now(), "Hello"));
-
+TEST_F(AIChatDatabaseTest, AddConversations) {
   InitDBAndDoWork([&]() {
-    auto on_conversation_entry_added = [&](int64_t entry_id) {
-      EXPECT_EQ(entry_id, INT64_C(1));
-    };
+    auto on_get_all_conversations =
+        [&](std::vector<mojom::ConversationPtr> conversations) {
+          EXPECT_EQ(conversations.size(), UINT64_C(2));
+        };
 
-    auto on_conversation_added = [&](int64_t conversation_id) {
-      EXPECT_EQ(conversation_id, INT64_C(1));
-
-      db_.AsyncCall(&AIChatDatabase::AddConversationEntry)
-          .WithArgs(conversation_id,
-                    mojom::ConversationEntry::New(
-                        INT64_C(-1), base::Time::Now(),
-                        mojom::CharacterType::HUMAN, std::move(texts)))
-          .Then(base::BindLambdaForTesting(on_conversation_entry_added));
-    };
-
-    db_.AsyncCall(&AIChatDatabase::AddConversation)
+    db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversation))
         .WithArgs(mojom::Conversation::New(INT64_C(1), base::Time::Now(),
-                                           "Improve label description", GURL()))
-        .Then(base::BindLambdaForTesting(on_conversation_added));
+                                           "Initial conversation", GURL()))
+        .Then(base::BindLambdaForTesting([&]() {
+          db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversation))
+              .WithArgs(mojom::Conversation::New(INT64_C(2), base::Time::Now(),
+                                                 "Another conversation",
+                                                 GURL()))
+              .Then(base::BindLambdaForTesting([&]() {
+                db_.AsyncCall(&AIChatDatabase::GetAllConversations)
+                    .Then(base::BindLambdaForTesting(on_get_all_conversations));
+              }));
+        }));
   });
 }
 
-TEST_F(AIChatDatabaseTest, ReadConversation) {
+TEST_F(AIChatDatabaseTest, AddConversationEntry) {
   // We need static storage variables throughout the depths of lambdas
   static const int64_t kConversationId = INT64_C(1);
   static const int64_t kConversationEntryId = INT64_C(1);
@@ -137,15 +136,11 @@ TEST_F(AIChatDatabaseTest, ReadConversation) {
                                     kConversationTitle);
                           EXPECT_EQ(conversations[0]->page_url->spec(),
                                     kURL.spec());
-                          EXPECT_EQ(
-                              conversations[0]
-                                  ->date.ToDeltaSinceWindowsEpoch()
-                                  .InMicroseconds(),
-                              kFirstTextCreatedAt.ToDeltaSinceWindowsEpoch()
-                                  .InMicroseconds());
+                          EXPECT_EQ(GetInternalValue(conversations[0]->date),
+                                    GetInternalValue(kFirstTextCreatedAt));
 
                           db_.AsyncCall(&AIChatDatabase::GetConversationEntries)
-                              .WithArgs(1)
+                              .WithArgs(kConversationId)
                               .Then(base::BindLambdaForTesting(
                                   [&](std::vector<mojom::ConversationEntryPtr>
                                           entries) {
@@ -159,12 +154,8 @@ TEST_F(AIChatDatabaseTest, ReadConversation) {
                                     // ConversationEntry's date should match
                                     // first generated text's date
                                     EXPECT_EQ(
-                                        entries[0]
-                                            ->date.ToDeltaSinceWindowsEpoch()
-                                            .InMicroseconds(),
-                                        kFirstTextCreatedAt
-                                            .ToDeltaSinceWindowsEpoch()
-                                            .InMicroseconds());
+                                        GetInternalValue(entries[0]->date),
+                                        GetInternalValue(kFirstTextCreatedAt));
 
                                     EXPECT_EQ(entries[0]->texts[0]->text,
                                               kFirstResponse);
