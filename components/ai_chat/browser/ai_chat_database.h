@@ -33,6 +33,8 @@ class AIChatDatabase {
   int64_t AddConversation(mojom::ConversationPtr conversation);
   int64_t AddConversationEntry(int64_t conversation_id,
                                mojom::ConversationEntryPtr entry);
+  int64_t AddConversationEntryText(int64_t conversation_entry_id,
+                                   mojom::ConversationEntryTextPtr entry_text);
   bool DeleteConversation(int64_t conversation_id);
   bool DropAllTables();
 

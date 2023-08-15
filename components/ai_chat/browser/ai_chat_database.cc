@@ -184,28 +184,43 @@ int64_t AIChatDatabase::AddConversationEntry(
   int64_t conversation_entry_row_id =
       insert_conversation_entry_statement.ColumnInt64(0);
 
-  for (const auto& text : entry->texts) {
-    sql::Statement insert_conversation_text_statement(
-        GetDB().GetUniqueStatement("INSERT INTO "
-                                   "conversation_entry_text("
-                                   "id, date, text, conversation_entry_id"
-                                   ") VALUES(NULL, ?, ?, ?)"));
-
-    insert_conversation_text_statement.BindTimeDelta(
-        0, SerializeTimeToDelta(text->date));
-    insert_conversation_text_statement.BindString(1, text->text);
-    insert_conversation_text_statement.BindInt64(2, conversation_entry_row_id);
-
-    if (!insert_conversation_text_statement.Run()) {
-      DVLOG(0)
-          << "Failed to execute 'conversation_entry_text' insert statement\n";
-      return INT64_C(-1);
-      ;
-    }
+  for (mojom::ConversationEntryTextPtr& text : entry->texts) {
+    AddConversationEntryText(conversation_entry_row_id, std::move(text));
   }
 
   transaction.Commit();
   return conversation_entry_row_id;
+}
+
+int64_t AIChatDatabase::AddConversationEntryText(
+    int64_t conversation_entry_id,
+    mojom::ConversationEntryTextPtr entry_text) {
+  sql::Statement get_conversation_entry_statement(
+      GetDB().GetUniqueStatement("SELECT id FROM conversation_entry"
+                                 " WHERE id=?"));
+  get_conversation_entry_statement.BindInt64(0, conversation_entry_id);
+
+  if (!get_conversation_entry_statement.Step()) {
+    DVLOG(0) << "ID not found in 'conversation entry' table";
+    return INT64_C(-1);
+  }
+
+  sql::Statement insert_text_statement(
+      GetDB().GetUniqueStatement("INSERT INTO "
+                                 "conversation_entry_text("
+                                 "id, date, text, conversation_entry_id"
+                                 ") VALUES(NULL, ?, ?, ?) RETURNING id"));
+  insert_text_statement.BindTimeDelta(0,
+                                      SerializeTimeToDelta(entry_text->date));
+  insert_text_statement.BindString(1, entry_text->text);
+  insert_text_statement.BindInt64(2, conversation_entry_id);
+
+  if (!insert_text_statement.Step()) {
+    DVLOG(0) << "Failed to execute 'conversation_entry' insert statement\n";
+    return INT64_C(-1);
+  }
+
+  return insert_text_statement.ColumnInt64(0);
 }
 
 bool AIChatDatabase::DeleteConversation(int64_t conversation_id) {
