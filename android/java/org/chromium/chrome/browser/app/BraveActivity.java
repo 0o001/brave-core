@@ -81,6 +81,8 @@ import org.chromium.chrome.browser.InternetConnection;
 import org.chromium.chrome.browser.LaunchIntentDispatcher;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.bookmarks.TabBookmarker;
+import org.chromium.chrome.browser.brave_leo.BraveLeoActivity;
+import org.chromium.chrome.browser.brave_leo.BraveLeoBottomSheetDialogFragment;
 import org.chromium.chrome.browser.brave_news.BraveNewsConnectionErrorHandler;
 import org.chromium.chrome.browser.brave_news.BraveNewsControllerFactory;
 import org.chromium.chrome.browser.brave_news.BraveNewsUtils;
@@ -397,6 +399,8 @@ public abstract class BraveActivity extends ChromeActivity
             }
         } else if (id == R.id.brave_speedreader_id) {
             enableSpeedreaderMode();
+        } else if (id == R.id.brave_leo_id) {
+            openBraveLeo();
         } else {
             return false;
         }
@@ -1696,6 +1700,15 @@ public abstract class BraveActivity extends ChromeActivity
         if (currentTab != null) {
             BraveSpeedReaderUtils.enableSpeedreaderMode(currentTab);
         }
+    }
+
+    private void openBraveLeo() {
+        //CustomTabActivity.showInfoPage(this, "chrome-untrusted://chat");
+        BraveLeoActivity.showPage(this, "chrome-untrusted://chat");
+//        BraveLeoBottomSheetDialogFragment braveLeoBottomSheetDialogFragment =
+//                new BraveLeoBottomSheetDialogFragment();
+//        braveLeoBottomSheetDialogFragment.show(getSupportFragmentManager(),
+//                BraveLeoBottomSheetDialogFragment.TAG_FRAGMENT);
     }
 
     public static ChromeTabbedActivity getChromeTabbedActivity() {
