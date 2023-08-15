@@ -234,29 +234,37 @@ bool AIChatDatabase::DeleteConversation(int64_t conversation_id) {
       GetDB().GetUniqueStatement("DELETE FROM conversation"
                                  "WHERE id=?"));
   delete_conversation_statement.BindInt64(0, conversation_id);
-  delete_conversation_statement.Run();
+
+  if (!delete_conversation_statement.Run()) {
+    return false;
+  }
 
   sql::Statement select_conversation_entry_statement(
       GetDB().GetUniqueStatement("SELECT id FROM conversation_entry"
                                  "WHERE conversation_id=?"));
 
-  sql::Statement delete_conversation_text_statement(
-      GetDB().GetUniqueStatement("DELETE FROM conversation_entry_text"
-                                 "WHERE conversation_entry_id=?"));
-
   // We remove all conversation text associated to |conversation_id|
   while (select_conversation_entry_statement.Step()) {
+    sql::Statement delete_conversation_text_statement(
+        GetDB().GetUniqueStatement("DELETE FROM conversation_entry_text"
+                                   "WHERE conversation_entry_id=?"));
     delete_conversation_text_statement.BindInt64(
         0, select_conversation_entry_statement.ColumnInt64(0));
-    delete_conversation_text_statement.Run();
+
+    if (!delete_conversation_text_statement.Run()) {
+      return false;
+    }
   }
 
   sql::Statement delete_conversation_entry_statement(
       GetDB().GetUniqueStatement("DELETE FROM conversation_entry"
                                  "WHERE conversation_entry_id=?"));
   delete_conversation_entry_statement.BindInt64(0, conversation_id);
+
   // At last we remove all conversation entries associated to |conversation_id|
-  delete_conversation_entry_statement.Run();
+  if (!delete_conversation_entry_statement.Run()) {
+    return false;
+  }
 
   transaction.Commit();
   return true;
