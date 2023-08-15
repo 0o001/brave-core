@@ -95,24 +95,30 @@ TEST_F(AIChatDatabaseTest, WriteConversation) {
 TEST_F(AIChatDatabaseTest, ReadConversation) {
   // We need static storage variables throughout the depths of lambdas
   static const int64_t kConversationId = INT64_C(1);
+  static const int64_t kConversationEntryId = INT64_C(1);
+
+  static const GURL kURL = GURL("https://brave.com/");
+  static const char kConversationTitle[] = "Summarizing Brave";
+
+  static const char kFirstResponse[] = "This is a generated response";
+  static const char kSecondResponse[] = "This is a re-generated response";
 
   static const base::Time kFirstTextCreatedAt(base::Time::Now());
   static const base::Time kSecondTextCreatedAt(base::Time::Now() +
                                                base::Minutes(5));
 
   static std::vector<mojom::ConversationEntryTextPtr> kTexts;
-  kTexts.emplace_back(mojom::ConversationEntryText::New(
-      1, kFirstTextCreatedAt, "This is a generated response"));
-  kTexts.emplace_back(mojom::ConversationEntryText::New(
-      2, kSecondTextCreatedAt, "This is a re-generated response"));
+  kTexts.emplace_back(mojom::ConversationEntryText::New(1, kFirstTextCreatedAt,
+                                                        kFirstResponse));
+  kTexts.emplace_back(mojom::ConversationEntryText::New(2, kSecondTextCreatedAt,
+                                                        kSecondResponse));
 
   InitDBAndDoWork([&]() {
     db_.AsyncCall(&AIChatDatabase::AddConversation)
         .WithArgs(mojom::Conversation::New(kConversationId, kFirstTextCreatedAt,
-                                           "Summarizing Brave",
-                                           GURL("https://brave.com/")))
+                                           kConversationTitle, kURL))
         .Then(base::BindLambdaForTesting([&](int64_t conversation_id) {
-          EXPECT_EQ(conversation_id, INT64_C(1));
+          EXPECT_EQ(conversation_id, kConversationId);
 
           db_.AsyncCall(&AIChatDatabase::AddConversationEntry)
               .WithArgs(conversation_id,
@@ -120,7 +126,7 @@ TEST_F(AIChatDatabaseTest, ReadConversation) {
                             INT64_C(-1), kFirstTextCreatedAt,
                             mojom::CharacterType::ASSISTANT, std::move(kTexts)))
               .Then(base::BindLambdaForTesting([&](int64_t entry_id) {
-                EXPECT_EQ(entry_id, INT64_C(1));
+                EXPECT_EQ(entry_id, kConversationEntryId);
 
                 db_.AsyncCall(&AIChatDatabase::GetAllConversations)
                     .Then(base::BindLambdaForTesting(
@@ -128,9 +134,9 @@ TEST_F(AIChatDatabaseTest, ReadConversation) {
                           EXPECT_FALSE(conversations.empty());
                           EXPECT_EQ(conversations[0]->id, INT64_C(1));
                           EXPECT_EQ(conversations[0]->title,
-                                    "Summarizing Brave");
+                                    kConversationTitle);
                           EXPECT_EQ(conversations[0]->page_url->spec(),
-                                    "https://brave.com/");
+                                    kURL.spec());
                           EXPECT_EQ(
                               conversations[0]
                                   ->date.ToDeltaSinceWindowsEpoch()
@@ -161,10 +167,9 @@ TEST_F(AIChatDatabaseTest, ReadConversation) {
                                             .InMicroseconds());
 
                                     EXPECT_EQ(entries[0]->texts[0]->text,
-                                              "This is a generated response");
-                                    EXPECT_EQ(
-                                        entries[0]->texts[1]->text,
-                                        "This is a re-generated response");
+                                              kFirstResponse);
+                                    EXPECT_EQ(entries[0]->texts[1]->text,
+                                              kSecondResponse);
                                   }));
                         }));
               }));
