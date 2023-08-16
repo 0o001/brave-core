@@ -1,0 +1,12 @@
+diff --git a/build_overrides/partition_alloc.gni b/build_overrides/partition_alloc.gni
+index 622af2267251b3161f500e10ec667c184139285a..40fbf979d9a8bbc3713d208bb8440899d7c18c7e 100644
+--- a/build_overrides/partition_alloc.gni
++++ b/build_overrides/partition_alloc.gni
+@@ -80,6 +80,6 @@ enable_backup_ref_ptr_support_default = _is_brp_supported
+ 
+ put_ref_count_in_previous_slot_default = true
+ enable_backup_ref_ptr_slow_checks_default = false
+-enable_dangling_raw_ptr_checks_default =
++enable_dangling_raw_ptr_checks_default = false &&
+     enable_backup_ref_ptr_support_default && is_linux && !is_official_build &&
+     (is_debug || dcheck_always_on)
