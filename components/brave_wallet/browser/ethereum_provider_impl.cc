@@ -12,6 +12,7 @@
 #include "base/containers/contains.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -385,13 +386,52 @@ void EthereumProviderImpl::SignMessage(const std::string& address,
     uint64_t chain_id;
     if (!base::HexStringToUInt64(chain_id_hex, &chain_id) ||
         chain_id != siwe_message->chain_id) {
-      return RejectChainIdMismatch(std::move(id),
-                                   base::NumberToString(siwe_message->chain_id),
+      const std::string& incorrect_chain_id =
+          base::NumberToString(siwe_message->chain_id);
+      brave_wallet_service_->AddSignMessageError(mojom::SignMessageError::New(
+          GenerateRandomHexString(), MakeOriginInfo(delegate_->GetOrigin()),
+          mojom::SignMessageErrorType::kChainIdMismatched,
+          l10n_util::GetStringFUTF8(
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+              l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_NETWORK),
+              base::StrCat(
+                  {l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_CHAIN_ID), u": ",
+                   base::ASCIIToUTF16(incorrect_chain_id)})),
+          incorrect_chain_id));
+      delegate_->ShowPanel();
+      return RejectChainIdMismatch(std::move(id), incorrect_chain_id,
                                    std::move(callback));
     }
-    // TODO(darkdh): Handle domain and account mismatch in core and notify
-    // front end to display error message to users. Which will be rejecting dapp
-    // first and warn users.
+    if (EthAddress::FromHex(address) !=
+        EthAddress::FromHex(siwe_message->address)) {
+      brave_wallet_service_->AddSignMessageError(mojom::SignMessageError::New(
+          GenerateRandomHexString(), MakeOriginInfo(delegate_->GetOrigin()),
+          mojom::SignMessageErrorType::kAccountMismatched,
+          l10n_util::GetStringFUTF8(
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+              l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_ACCOUNT),
+              base::ASCIIToUTF16(siwe_message->address)),
+          absl::nullopt));
+      delegate_->ShowPanel();
+      return RejectInvalidParams(std::move(id), std::move(callback));
+    }
+    if (bool uri_mismatched = false;
+        delegate_->GetOrigin() != siwe_message->origin ||
+        (uri_mismatched =
+             !siwe_message->origin.IsSameOriginWith(siwe_message->uri))) {
+      brave_wallet_service_->AddSignMessageError(mojom::SignMessageError::New(
+          GenerateRandomHexString(), MakeOriginInfo(delegate_->GetOrigin()),
+          mojom::SignMessageErrorType::kDomainMismatched,
+          l10n_util::GetStringFUTF8(
+              IDS_BRAVE_WALLET_SIGN_MESSAGE_MISMATCH_ERR,
+              l10n_util::GetStringUTF16(IDS_BRAVE_WALLET_DOMAIN),
+              base::ASCIIToUTF16(uri_mismatched
+                                     ? siwe_message->uri.spec()
+                                     : siwe_message->origin.Serialize())),
+          absl::nullopt));
+      delegate_->ShowPanel();
+      return RejectInvalidParams(std::move(id), std::move(callback));
+    }
 
     sign_data = mojom::SignDataUnion::NewEthSiweData(std::move(siwe_message));
   } else {
