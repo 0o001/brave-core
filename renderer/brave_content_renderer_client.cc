@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/logging.h"
 #include "base/feature_list.h"
 #include "base/ranges/algorithm.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
@@ -57,9 +58,14 @@
 namespace {
 void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
                                 media::KeySystemInfos key_systems) {
+  LOG(WARNING) << "brave_content_renderer_client.cc: MaybeRemoveWidevineSupport: 0";
+  for (auto const& key_system : key_systems) {
+    LOG(WARNING) << "brave_content_renderer_client.cc: MaybeRemoveWidevineSupport: 0.1: " << key_system->GetBaseKeySystemName();
+  }
 #if BUILDFLAG(ENABLE_WIDEVINE)
   auto dynamic_params = BraveRenderThreadObserver::GetDynamicParams();
   if (!dynamic_params.widevine_enabled) {
+    LOG(WARNING) << "brave_content_renderer_client.cc: MaybeRemoveWidevineSupport: 1.1";
     key_systems.erase(
         base::ranges::remove(
             key_systems, kWidevineKeySystem,
@@ -69,12 +75,15 @@ void MaybeRemoveWidevineSupport(media::GetSupportedKeySystemsCB cb,
         key_systems.cend());
   }
 #endif
+  LOG(WARNING) << "brave_content_renderer_client.cc: MaybeRemoveWidevineSupport: 2";
   cb.Run(std::move(key_systems));
 }
 
 }  // namespace
 
-BraveContentRendererClient::BraveContentRendererClient() = default;
+BraveContentRendererClient::BraveContentRendererClient() {
+  LOG(WARNING) << "brave_content_renderer_client.cc: Constructor: 0";
+}
 
 void BraveContentRendererClient::
     SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
@@ -172,6 +181,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 
 void BraveContentRendererClient::GetSupportedKeySystems(
     media::GetSupportedKeySystemsCB cb) {
+  LOG(WARNING) << "brave_content_renderer_client.cc: GetSupportedKeySystems: 0";
   ChromeContentRendererClient::GetSupportedKeySystems(
       base::BindRepeating(&MaybeRemoveWidevineSupport, cb));
 }
