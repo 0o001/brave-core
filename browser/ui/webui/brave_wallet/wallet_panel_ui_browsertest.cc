@@ -75,6 +75,10 @@ std::string NeonEVMNetworkChainName() {
   return NeonEVMNetwork() + " .chainName";
 }
 
+std::string DAppSettingsButton() {
+  return R"([data-test-id='dapp-settings-button'])";
+}
+
 std::string NetworksButton() {
   return R"([data-test-id='select-network-button'])";
 }
@@ -248,6 +252,9 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, InitialUIRendered) {
 #endif
 IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, MAYBE_HideNetworkInSettings) {
   ActivateWalletTab();
+  // Wait and click on DApp settings button.
+  ASSERT_TRUE(
+      WaitAndClickElement(wallet(), QuerySelectorJS(DAppSettingsButton())));
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
@@ -266,6 +273,9 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, MAYBE_HideNetworkInSettings) {
 
   ActivateWalletTab();
   wallet()->GetController().Reload(content::ReloadType::NORMAL, true);
+  // Wait and click on DApp settings button.
+  ASSERT_TRUE(
+      WaitAndClickElement(wallet(), QuerySelectorJS(DAppSettingsButton())));
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
@@ -281,6 +291,9 @@ IN_PROC_BROWSER_TEST_F(WalletPanelUIBrowserTest, CustomNetworkInSettings) {
   CreateSettingsTab();
 
   ActivateWalletTab();
+  // Wait and click on DApp settings button.
+  ASSERT_TRUE(
+      WaitAndClickElement(wallet(), QuerySelectorJS(DAppSettingsButton())));
   // Wait and click on select network button.
   ASSERT_TRUE(WaitAndClickElement(wallet(), QuerySelectorJS(NetworksButton())));
 
