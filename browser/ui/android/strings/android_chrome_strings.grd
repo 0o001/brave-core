@@ -1516,10 +1516,10 @@ Your Brave account may have other forms of browsing history like searches and ac
         Choose when to block third-party cookies
       </message>
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_TITLE" desc="Title for the radio button for blocking third-party cookies in private.">
-        Block while using private
+        Block while using Private
       </message>
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_INCOGNITO_DESCRIPTION" desc="Description for the radio button for blocking third-party cookies in private.">
-        While in private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
+        While in Private, sites can’t use your cookies to see your browsing activity across different sites, for example, to personalize ads. Features on some sites may break.
       </message>
       <message name="IDS_PRIVACY_GUIDE_COOKIES_BLOCK_ALWAYS_TITLE" desc="Title for the radio button for blocking third-party cookies always.">
         Block all the time
@@ -2911,7 +2911,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         {FILE_COUNT, plural, =1 {# Page} other {# Pages}}
       </message>
       <message name="IDS_DOWNLOAD_PAGE" desc="Download this page.">
-        Download page
+        Download this page
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_NO_DOWNLOADS" desc="Text appearing on an empty tab that indicates that downloaded files appear on this tab.">
         Files that you download appear here
@@ -2966,6 +2966,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_DOWNLOAD_MANAGER_EXPLORE_OFFLINE" desc="Tab text for the offline content in download home which contains recommended offline content for the user.">
         Explore Offline
+      </message>
+      <message name="IDS_DOWNLOAD_FILE_TYPE_NOT_SUPPORTED" desc="Error message shown to user when a file can't de downloaded due to it's file format (e.g. .pdf, .docx, .apk).">
+        Cannot download file. File format not supported.
       </message>
 
       <!-- Browsing History UI -->
@@ -3572,7 +3575,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         New tab
       </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_PREFERENCE_SHARE" desc="Title name for the share option in the preference.">
-        Share
+        Share this page
       </message>
       <message name="IDS_ADAPTIVE_TOOLBAR_BUTTON_PREFERENCE_VOICE_SEARCH" desc="Title name for the voice search option in the preference.">
         Voice search
@@ -4156,10 +4159,10 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         Signed out. Opens dialog to sign in and turn on sync.
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_HOME" desc="Content description for the home button.">
-        Home
+        Open the home page
       </message>
       <message name="IDS_ACCESSIBILITY_BTN_REFRESH" desc="Content description for the refresh page button.">
-        Refresh page
+        Reload this page
       </message>
       <message name="IDS_ACCESSIBILITY_BTN_STOP_LOADING" desc="Content description for the stop loading page button.">
         Stop page loading
@@ -4397,6 +4400,9 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PAGE_INSIGHTS_HUB_TITLE_TEXT" desc="The title of Page Insights Sheet.">
         Related Insights
+      </message>
+      <message name="IDS_PAGE_INSIGHTS_BACK_BUTTON_DESCRIPTION" desc="The content description of back button in page insights sheet.">
+        Page insights back button
       </message>
 
       <!-- WebFeed -->
@@ -5644,7 +5650,7 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
         chrome_stylized_highlight_
       </message>
       <message name="IDS_CONTENT_CREATION_NOTE_TEMPLATE_SELECTED" desc="Announcment string for accessibility when selected template changes.">
-        <ph name="TEMPLATE_TITLE">%1$s<ex>Classic</ex> template selected</ph>
+        <ph name="TEMPLATE_TITLE">%1$s<ex>Classic</ex></ph> template selected
       </message>
       <message name="IDS_CONTENT_CREATION_NOTE_DIALOG_DESCRIPTION" desc="Accessibility information for note template picking dialog.">
         Select a template for your highlight.
@@ -5842,6 +5848,41 @@ To change this setting, <ph name="BEGIN_LINK">&lt;resetlink&gt;</ph>reset sync<p
       </message>
       <message name="IDS_PLEASE_WAIT_PROGRESS_MESSAGE" desc="Message on the progress dialog used when waiting for an operation to complete.">
         Please wait…
+      </message>
+
+      <!-- Read Aloud ("Listen to this page") player strings -->
+      <message name="IDS_READALOUD_CLOSE_PLAYER_BUTTON_CONTENT_DESCRIPTION" desc="Accessibility string for the button that closes the 'Listen to this page' player.">
+        Tap to close “Listen to this page”.
+      </message>
+      <message name="IDS_READALOUD_PLAYER_NAME" desc="Name of the Read Aloud player for accessiblity.">
+        “Listen to this page” player.
+      </message>
+      <message name="IDS_READALOUD_PLAYER_OPENED_AT_FULL_HEIGHT" desc="Accessibility string spoken when the 'Listen to this page' player bottom sheet expands to its full height.">
+        “Listen to this page” player opened at full height.
+      </message>
+      <message name="IDS_READALOUD_PLAYER_MINIMIZED" desc="Accessibility string spoken when the 'Listen to this page' player bottom sheet shrinks to its minimized height.">
+        “Listen to this page” player minimized.
+      </message>
+      <message name="IDS_READALOUD_CHROME_NOW_PLAYING" desc="Text in 'Listen to this page' player appearing before the title of the currently playing page.">
+        Brave now playing
+      </message>
+      <message name="IDS_READALOUD_REPLAY" desc="Accessibility string for the button that rewinds 'Listen to this page' playback by the specified number of seconds.">
+        Back <ph name="NUMBER_OF_SECONDS">%1$s<ex>10</ex></ph> seconds
+      </message>
+      <message name="IDS_READALOUD_FORWARD" desc="Accessibility string for the button that seeks 'Listen to this page' playback forward by the specified number of seconds.">
+        Forward <ph name="NUMBER_OF_SECONDS">%1$s<ex>30</ex></ph> seconds
+      </message>
+      <message name="IDS_READALOUD_PLAY" desc="Accessibility string for the 'Listen to this page' play button.">
+        Play
+      </message>
+      <message name="IDS_READALOUD_PAUSE" desc="Accessibility string for the 'Listen to this page' pause button.">
+        Pause
+      </message>
+      <message name="IDS_READALOUD_SPEED_MENU_BUTTON" desc="Accessibility string for the 'Listen to this page' playback speed menu button.">
+        Playback speed: <ph name="PLAYBACK_SPEED">%1$s<ex>1.0</ex></ph>. Click to change.
+      </message>
+      <message name="IDS_READALOUD_OPTIONS_MENU_BUTTON" desc="Accessibility string for the 'Listen to this page' options menu button.">
+        More options
       </message>
     </messages>
   </release>

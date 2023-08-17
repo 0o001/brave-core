@@ -29,6 +29,8 @@
     </if>
   <if expr="chromeos_lacros">
     </if>
+  <if expr="is_win or is_linux">
+    </if>
 
   <if expr="is_chromeos">
     </if>

@@ -912,6 +912,9 @@
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
     Preferred search engine
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_SEARCH_ENGINE_LABEL" desc="Label in OS settings describing search engine behavior.">
+    Set search engine in Brave browser settings
+  </message>
   <message name="IDS_OS_SETTINGS_SEARCH_ENGINE_DESCRIPTION" desc="Description in the search engine dialog in OS settings explaining that search engine is used in both the Brave browser and the ChromeOS app launcher.">
     Set your default search engine for Brave browser and <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> Launcher
   </message>
@@ -924,10 +927,10 @@
   <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_DISABLED" desc="Sub label for the Brave Assistant button when Assistant is disabled.">
     Disabled
   </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ON" desc="Row label in Brave Assistant settings." meaning="Google Assistant is on.">
+  <message name="IDS_OS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_ON" desc="Row label in Brave Assistant settings." meaning="Google Assistant is on.">
     On
   </message>
-  <message name="IDS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_OFF" desc="Row label in Brave Assistant settings." meaning="Google Assistant is off.">
+  <message name="IDS_OS_SETTINGS_SEARCH_GOOGLE_ASSISTANT_OFF" desc="Row label in Brave Assistant settings." meaning="Google Assistant is off.">
     Off
   </message>
    <message name="IDS_SETTINGS_SEARCH_AND_ASSISTANT" desc="Name of the settings page which displays search engine and assistant preferences on ChromeOS.">
@@ -2713,6 +2716,12 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_CUSTOMIZE_MOUSE_BUTTONS_TITLE" translateable="false" desc="Title of Customize mouse buttons page">
     Customize mouse buttons
   </message>
+  <message name="IDS_SETTINGS_KEY_COMBINATION_OPTION_LABEL" translateable="false" desc="Label of key combination option in the button remapping action dropdown menu.">
+    Key combination
+  </message>
+  <message name="IDS_SETTINGS_NO_REMAPPING_OPTION_LABEL" translateable="false" desc="Label of no remapping option in the button remapping action dropdown menu.">
+    None
+  </message>
 
   <!-- Bluetooth page (OS settings) -->
   <message name="IDS_SETTINGS_BLUETOOTH_CONNECTED" desc="In Bluetooth device list, this label is shown below a device which is already connected.">
@@ -3081,16 +3090,14 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_POINTING_STICK_SPEED_LABEL" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of the pointing stick (normally referred to as a TrackPoint).">
     TrackPoint speed
   </message>
-  <!-- TODO(zhangwenyu): Remove translateable="false" once the string is finalized. -->
-  <message name="IDS_SETTINGS_MOUSE_SCROLL_SPEED_LABEL" translateable="false" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of mouse scrolling.">
+  <message name="IDS_SETTINGS_MOUSE_SCROLL_SPEED_LABEL" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of mouse scrolling.">
     Scrolling speed
   </message>
-  <!-- TODO(zhangwenyu): Remove translateable="false" once the string is finalized. -->
-  <message name="IDS_SETTINGS_MOUSE_CURSOR_LABEL" translateable="false" desc="In Device Settings, the text of mouse cursor subsection title.">
-    Mouse cursor
+  <message name="IDS_SETTINGS_MOUSE_CURSOR_LABEL" desc="In Device Settings, the text of mouse cursor subsection title.">
+    Cursor
   </message>
-  <message name="IDS_SETTINGS_MOUSE_SCROLLING_LABEL" translateable="false" desc="In Device Settings, the text of mouse scrolling subsection title.">
-    Mouse scrolling
+  <message name="IDS_SETTINGS_MOUSE_SCROLLING_LABEL" desc="In Device Settings, the text of mouse scrolling subsection title.">
+    Scrolling
   </message>
   <message name="IDS_SETTINGS_MOUSE_SWAP_BUTTONS_LABEL" desc="In Device Settings, the text next to the checkbox to set the primary mouse button to the right button instead of the left button.">
     Swap primary mouse button
@@ -3125,15 +3132,14 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_OS_SETTINGS_REVAMP_MOUSE_ACCELERATION_DESCRIPTION" desc="In Device Settings, the description for the label next to the checkbox to enable mouse acceleration.">
     Faster movements with your mouse will move the cursor farther
   </message>
-  <!-- TODO(zhangwenyu): Remove translateable="false" once the string is finalized. -->
-  <message name="IDS_SETTINGS_MOUSE_SCROLL_ACCELERATION_LABEL" translateable="false" desc="In Device Settings, the text next to the toggle for mouse scroll acceleration.">
-    Enable scroll acceleration. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
+  <message name="IDS_SETTINGS_MOUSE_SCROLL_ACCELERATION_LABEL" desc="In Device Settings, the text next to the toggle for mouse scroll acceleration. Faster scrolling with your mouse will scroll farther.">
+    Scroll acceleration <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
-  <message name="IDS_SETTINGS_CURSOR_SPEED_LABEL" translateable="false" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of the mouse cursor.">
+  <message name="IDS_SETTINGS_CURSOR_SPEED_LABEL" desc="In Device Settings, the text next to the slider that sets the speed (sensitivity) of the mouse cursor.">
     Cursor speed
   </message>
-  <message name="IDS_SETTINGS_CURSOR_ACCELERATION_LABEL" translateable="false" desc="In Device Settings, the text next to the checkbox to disable mouse cursor acceleration.">
-    Enable cursor acceleration
+  <message name="IDS_SETTINGS_CURSOR_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable mouse cursor acceleration. Faster movements with your mouse will move the cursor farther.">
+    Cursor acceleration
   </message>
   <message name="IDS_SETTINGS_POINTING_STICK_ACCELERATION_LABEL" desc="In Device Settings, the text next to the checkbox to disable pointing stick (a.k.a. TrackPoint) acceleration. (TrackPoint is a trademark that's not translated.)">
     Enable TrackPoint acceleration
@@ -4648,14 +4654,32 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_MULTIDEVICE_SMART_LOCK_SUMMARY" desc="Description of for the 'Smart Lock' setting. This feature automatically unlocks the user's Chromebook if their phone is nearby and unlocked.">
     Unlock your <ph name="DEVICE_TYPE">$1<ex>Chromebook</ex></ph> with your phone. <ph name="LINK_BEGIN">&lt;a target="_blank" href="$2<ex>https://google.com/</ex>"&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_CHANGE_PASSWORD_BUTTON" desc="Button that is used to change a password.">
+    Change password
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_DEVICE_PASSWORD_OPTION_LABEL" desc="Label for the option to use a device password to sign in.">
+    Device password
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_GOOGLE_ACCOUNT_PASSWORD_OPTION_LABEL" desc="Label for the option to use the Brave sync chain password to sign in.">
+    Brave sync chain password
+  </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_OPTIONS_LOGIN_LOCK" desc="Text on the lock screen which is the subheader for the screen locking options.">
     Lock screen from sleep mode
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_REMOVE_PIN_BUTTON" desc="Label of the button that removes the user's PIN.">
     Remove
   </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PASSWORD_LABEL" desc="Label for the password authentication factor on the lock screen page.">
+    Password
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PASSWORD_DESCRIPTION" desc="Description of the password authentication factor on the lock screen page.">
+    Device password or Brave sync chain password
+  </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_PIN_LABEL" desc="Label for PIN authentication factor on the lock screen page.">
     PIN
+  </message>
+  <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_SETUP_PASSWORD_BUTTON" desc="Button that is used to setup a password when the user does not have a password yet.">
+    Set up
   </message>
   <message name="IDS_SETTINGS_PEOPLE_LOCK_SCREEN_SETUP_PIN_BUTTON" desc="Button that is used to setup a new PIN when the user does not have a PIN yet.">
     Set up
@@ -4933,6 +4957,9 @@ Press an assigned switch or key to remove assignment.
   <message name="IDS_SETTINGS_RESET_TITLE" desc="Title of a section of settings. This section describes settings for resetting the device.">
     Reset settings
   </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_RESET_TITLE" desc="Title of a section of settings. This section describes settings for resetting the device.">
+    Reset
+  </message>
   <message name="IDS_SETTINGS_FACTORY_RESET" desc="Name of the factory reset option on the Brave settings page">
     Powerwash
   </message>
@@ -4941,6 +4968,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_FACTORY_RESET_DESCRIPTION" desc="Description of the factory reset option on the Brave settings page">
     Remove all user accounts and reset your <ph name="IDS_SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph> device to be just like new.
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_FACTORY_RESET_DESCRIPTION" desc="Description of the factory reset option on the ChromeOS settings page">
+    Remove all user accounts and reset your Chromebook to be just like new.
   </message>
   <message name="IDS_SETTINGS_FACTORY_RESET_WARNING" desc="Warning text in the 'Factory Reset' window">
     A restart is required before your device can be reset with Powerwash. <ph name="LINK_BEGIN">&lt;a&gt;</ph>Learn more<ph name="LINK_END">&lt;/a&gt;</ph>
@@ -5264,6 +5294,9 @@ Press an assigned switch or key to remove assignment.
   </message>
   <message name="IDS_SETTINGS_TIME_ZONE_DETECTION_MODE_IP_ONLY_DEFAULT" desc="Display name for the automatic time zone detection mode which enables time zone detection sending unprecise location to Brave servers. Default means that this is the default time zone detection mode.">
     Use your IP address to determine location (default)
+  </message>
+  <message name="IDS_OS_SETTINGS_REVAMP_TIME_ZONE_DETECTION_MODE_IP_ONLY_DEFAULT" desc="Display name for the automatic time zone detection mode which enables time zone detection sending unprecise location to Brave servers.">
+    Use your IP address to determine location
   </message>
   <message name="IDS_SETTINGS_TIME_ZONE_DETECTION_MODE_SEND_WIFI_AP" desc="Display name for the automatic time zone detection mode which enables time zone detection sending list of visible WiFi Access Point names to Brave servers.">
     Use only Wi-Fi to determine location

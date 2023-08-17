@@ -10052,6 +10052,14 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_MEDIA_SCREEN_CAPTURE_NOTIFICATION_STOP" desc="Text shown on the button that stops screen capture.">
         Stop sharing
       </message>
+      <if expr="chromeos_lacros">
+        <message name="IDS_LACROS_STATUS_TRAY_SCREEN_ACCESS_STOP" desc="screen sharing stop button">
+          Stop
+        </message>
+        <message name="IDS_LACROS_STATUS_TRAY_SCREEN_SHARE_TITLE" desc="The title for screen sharing notification">
+          You're sharing your screen
+        </message>
+      </if>
 
       <!-- Strings for the certificate selection dialog triggered by chrome.platformKeys -->
       <message name="IDS_PLATFORM_KEYS_SELECT_CERT_DIALOG_TEXT" desc="The text in the dialog that prompts the user to select a certificate when an extension requests certificates through the platformKeys API.">
@@ -12691,22 +12699,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MANAGE_PASSWORDS_DIFFERENT_DOMAIN_NO_PASSWORDS_TITLE" desc="The title text that is used in the manage passwords bubble when no passwords are available for a different domain.">
         No passwords saved for <ph name="ORIGIN">$1<ex>example.com</ex></ph>
       </message>
-      <message name="IDS_MANAGE_PASSWORDS_ACCOUNT_STORE_ICON_DESCRIPTION" desc="An accessibility text for images that mark passwords as stored in the user's profile.">
-        Password stored in your Brave account
-      </message>
-      <message name="IDS_MANAGE_PASSWORDS_DELETED" desc="The text that is used in the manage passwords bubble when a password is deleted.">
-        Password deleted
-      </message>
-      <message name="IDS_MANAGE_PASSWORDS_UNDO" desc="The text that is used in the manage passwords bubble when a password is deleted.">
-        Undo
-      </message>
-      <message name="IDS_MANAGE_PASSWORDS_UNDO_TOOLTIP" desc="Tooltip text for restoring a deleted password (undoing removal)">
-        Restore deleted password for <ph name="USERNAME">$1<ex>user@gmail.com</ex></ph>
-      </message>
-      <message name="IDS_MANAGE_PASSWORDS_DELETE" desc="The tooltip of a button that is used in the manage passwords bubble for removing the credential.">
-        Delete password for <ph name="USERNAME">$1<ex>user@gmail.com</ex></ph>
-      </message>
-
       <message name="IDS_MANAGE_PASSWORDS_SHOW_PASSWORD" desc="The tooltip of a button that is used in the manage pending password bubble for revealing the password.">
         Show password
       </message>
@@ -13075,7 +13067,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Linux apps
         </message>
         <message name="IDS_APP_LIST_BRUSCHETTA_DEFAULT_FOLDER_NAME" desc="The default name for the Bruschetta apps folder in the App Launcher">
-          Bruschetta apps
+          <ph name="VM_NAME">$1<ex>ManagedVM</ex></ph> apps
         </message>
       </if>
 
