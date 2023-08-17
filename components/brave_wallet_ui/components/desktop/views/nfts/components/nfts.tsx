@@ -35,6 +35,7 @@ import {
 } from '../../../../../common/slices/api.slice'
 import { getBalance } from '../../../../../utils/balance-utils'
 import { AccountsGroupByOption, NetworksGroupByOption } from '../../../../../options/group-assets-by-options'
+import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -81,6 +82,8 @@ export const Nfts = (props: Props) => {
     onShowPortfolioSettings,
     tokenBalancesRegistry
   } = props
+
+  const { braveWalletP3A } = useApiProxy()
 
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(WalletSelectors.isNftPinningFeatureEnabled)
@@ -170,6 +173,10 @@ export const Nfts = (props: Props) => {
     setShowSearchBar(false)
     setSearchValue('')
   }, [])
+
+  React.useEffect(() => {
+    braveWalletP3A.recordNFTGalleryView(nftList.length);
+  }, [nftList]);
 
   // memos
   const [sortedNfts, sortedHiddenNfts] = React.useMemo(() => {
