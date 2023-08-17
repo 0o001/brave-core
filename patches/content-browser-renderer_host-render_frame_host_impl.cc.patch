@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/render_frame_host_impl.cc b/content/browser/renderer_host/render_frame_host_impl.cc
-index fa8adac96c069c93a0b98ef79c6941a1907503bd..36c587fcb100a88ed1bf75b30970670012c69a95 100644
+index 4c923eda3f40bfa7fce33164c8f1a9aabd1e6df6..bbe8319eaf7b78bc2436a83e7a923ac5a1c6c0a6 100644
 --- a/content/browser/renderer_host/render_frame_host_impl.cc
 +++ b/content/browser/renderer_host/render_frame_host_impl.cc
-@@ -8114,6 +8114,8 @@ void RenderFrameHostImpl::CreateNewWindow(
+@@ -8211,6 +8211,8 @@ void RenderFrameHostImpl::CreateNewWindow(
          dom_storage_context, params->session_storage_namespace_id);
    }
  
