@@ -1,5 +1,5 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index d24d3256b081d7d17617271e4a2deda366b64e48..1e0ad513e843dc8cbdb123a85435e28949e3873b 100644
+index dc4ca27952792fbe34857cbd7d9d2743fae51b5d..7957c9e3572575344af8056f55a0e75152439af2 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 @@ -301,6 +301,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -10,17 +10,19 @@ index d24d3256b081d7d17617271e4a2deda366b64e48..1e0ad513e843dc8cbdb123a85435e289
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -479,6 +480,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   // Register pref used to detect addresses in web page
-   registry->RegisterBooleanPref(prefs::kDetectAddressesEnabled, true);
-   registry->RegisterBooleanPref(prefs::kDetectAddressesAccepted, false);
+@@ -485,6 +486,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // Preferences related to Save to Photos settings.
+   registry->RegisterStringPref(prefs::kIosSaveToPhotosDefaultGaiaId,
+                                std::string());
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  
  // This method should be periodically pruned of year+ old migrations.
-@@ -567,4 +569,5 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
+@@ -573,6 +575,7 @@ void MigrateObsoleteBrowserStatePrefs(PrefService* prefs) {
    invalidation::InvalidatorRegistrarWithMemory::ClearDeprecatedPrefs(prefs);
    invalidation::PerUserTopicSubscriptionManager::ClearDeprecatedPrefs(prefs);
    invalidation::FCMInvalidationService::ClearDeprecatedPrefs(prefs);
 +  BRAVE_MIGRATE_OBSOLETE_BROWSER_STATE_PREFS
  }
+ 
+ void MigrateObsoleteUserDefault(void) {
