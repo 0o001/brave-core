@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
@@ -40,7 +41,7 @@ class AIChatDatabaseTest : public testing::Test {
   }
 
   base::FilePath db_file_path() {
-    return temp_directory_.GetPath().Append("ai_chat");
+    return temp_directory_.GetPath().AppendASCII("ai_chat");
   }
 
  protected:
