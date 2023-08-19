@@ -139,7 +139,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsFlagsUtilTest,
-                         testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads

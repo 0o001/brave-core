@@ -69,7 +69,7 @@ std::string TestParamToString(
 
 INSTANTIATE_TEST_SUITE_P(,
                          BraveAdsEnvironmentCommandLineSwitchParserUtilTest,
-                         testing::ValuesIn(kTests),
+                         ::testing::ValuesIn(kTests),
                          TestParamToString);
 
 }  // namespace brave_ads
