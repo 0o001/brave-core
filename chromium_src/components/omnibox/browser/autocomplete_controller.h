@@ -6,12 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_CONTROLLER_H_
 
-#define AutocompleteProviderTest \
+#define AutocompleteControllerTest \
   OmniboxPromotionTest;          \
-  friend class AutocompleteProviderTest
+  friend class AutocompleteControllerTest
 
 #include "src/components/omnibox/browser/autocomplete_controller.h"  // IWYU pragma: export
 
-#undef AutocompleteProviderTest
+#undef AutocompleteControllerTest
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_AUTOCOMPLETE_CONTROLLER_H_
