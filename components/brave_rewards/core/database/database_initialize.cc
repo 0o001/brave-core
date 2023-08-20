@@ -5,6 +5,7 @@
 
 #include <utility>
 
+#include "brave/components/brave_rewards/core/common/legacy_callback_helpers.h"
 #include "brave/components/brave_rewards/core/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_impl.h"
@@ -21,7 +22,7 @@ DatabaseInitialize::DatabaseInitialize(RewardsEngineImpl& engine)
 
 DatabaseInitialize::~DatabaseInitialize() = default;
 
-void DatabaseInitialize::Start(LegacyResultCallback callback) {
+void DatabaseInitialize::Start(ResultCallback callback) {
   auto transaction = mojom::DBTransaction::New();
   transaction->version = GetCurrentVersion();
   transaction->compatible_version = GetCompatibleVersion();
@@ -31,27 +32,28 @@ void DatabaseInitialize::Start(LegacyResultCallback callback) {
 
   engine_->RunDBTransaction(
       std::move(transaction),
-      std::bind(&DatabaseInitialize::OnInitialize, this, _1, callback));
+      base::BindOnce(&DatabaseInitialize::OnInitialize, base::Unretained(this),
+                     std::move(callback)));
 }
 
-void DatabaseInitialize::OnInitialize(mojom::DBCommandResponsePtr response,
-                                      LegacyResultCallback callback) {
+void DatabaseInitialize::OnInitialize(ResultCallback callback,
+                                      mojom::DBCommandResponsePtr response) {
   if (!response ||
       response->status != mojom::DBCommandResponse::Status::RESPONSE_OK) {
     BLOG(0, "Response is wrong");
-    callback(mojom::Result::DATABASE_INIT_FAILED);
+    std::move(callback).Run(mojom::Result::DATABASE_INIT_FAILED);
     return;
   }
 
   if (!response->result || !response->result->get_value()->is_int_value()) {
     BLOG(0, "DB init failed");
-    callback(mojom::Result::DATABASE_INIT_FAILED);
+    std::move(callback).Run(mojom::Result::DATABASE_INIT_FAILED);
     return;
   }
 
   const auto current_table_version =
       response->result->get_value()->get_int_value();
-  migration_.Start(current_table_version, callback);
+  migration_.Start(current_table_version, std::move(callback));
 }
 
 }  // namespace database
