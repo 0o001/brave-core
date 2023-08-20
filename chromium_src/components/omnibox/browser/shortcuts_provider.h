@@ -6,12 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_SHORTCUTS_PROVIDER_H_
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_SHORTCUTS_PROVIDER_H_
 
-#define kShortcutsProviderDefaultMaxRelevance \
-  kShortcutsProviderDefaultMaxRelevance;      \
-  friend class BraveShortcutsProvider
+#define DoAutocomplete                 \
+  DoAutocompleteUnused();              \
+  friend class BraveShortcutsProvider; \
+  void DoAutocomplete
 
 #include "src/components/omnibox/browser/shortcuts_provider.h"  // IWYU pragma: export
 
-#undef kShortcutsProviderDefaultMaxRelevance
+#undef DoAutocomplete
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_OMNIBOX_BROWSER_SHORTCUTS_PROVIDER_H_
